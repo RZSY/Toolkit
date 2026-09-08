@@ -401,16 +401,16 @@
 
                 <!--
                   TEMPLATE — copy one of these <a class="tool"> blocks to add a new tool.
-                  1. Change href to the tool's real page.
-                  2. Change the h3 title and the tool-desc text.
-                  3. Change the single fallback letter (used only if the favicon can't load).
-                  The favicon preview is fetched automatically from the href — no image to upload.
+                  1. Change href to the tool's real page (must match the actual filename exactly).
+                  2. Set the img src to that tool's own ico/ file (same one it uses in its own <link rel="icon">).
+                  3. Change the h3 title and the tool-desc text.
+                  4. Change the single fallback letter (used only if the favicon file is missing/fails to load).
                 -->
 
                 <a class="tool" href="chartsmith.html">
                     <div class="tool-preview">
                         <div class="tool-icon-wrap">
-                            <img class="tool-favicon" alt="" loading="lazy">
+                            <img class="tool-favicon" src="ico/csico.jpg" alt="" loading="lazy">
                             <div class="tool-fallback">C</div>
                         </div>
                     </div>
@@ -421,10 +421,10 @@
                     </div>
                 </a>
 
-                <a class="tool" href="timeline-builder.html">
+                <a class="tool" href="timeline-generator.html">
                     <div class="tool-preview">
                         <div class="tool-icon-wrap">
-                            <img class="tool-favicon" alt="" loading="lazy">
+                            <img class="tool-favicon" src="ico/tbico.jpg" alt="" loading="lazy">
                             <div class="tool-fallback">T</div>
                         </div>
                     </div>
@@ -464,30 +464,23 @@
             });
         })();
 
-        // Fetch each tool's favicon as its preview image, with a letter fallback on failure
-        // (also guards against sandboxed/srcdoc previews where there's no valid base URL to resolve against).
+        // Each tool card's favicon is loaded directly from its local ico/ file
+        // (set via the img's src attribute in the HTML). If that file is missing
+        // or fails to load, fall back to the single-letter placeholder.
         document.querySelectorAll('.tool').forEach(function (tool) {
             var img = tool.querySelector('.tool-favicon');
             var fallback = tool.querySelector('.tool-fallback');
-            var href = tool.getAttribute('href');
-            var absoluteUrl = null;
 
-            try {
-                absoluteUrl = new URL(href, document.baseURI).href;
-            } catch (e) {
-                try { absoluteUrl = new URL(href).href; } catch (e2) { absoluteUrl = null; }
-            }
-
-            if (absoluteUrl) {
-                img.src = 'https://www.google.com/s2/favicons?sz=128&domain_url=' + encodeURIComponent(absoluteUrl);
-                img.addEventListener('error', function () {
-                    img.style.display = 'none';
-                    fallback.style.display = 'flex';
-                });
-            } else {
+            if (!img.getAttribute('src')) {
                 img.style.display = 'none';
                 fallback.style.display = 'flex';
+                return;
             }
+
+            img.addEventListener('error', function () {
+                img.style.display = 'none';
+                fallback.style.display = 'flex';
+            });
         });
 
         // Live search across tool name + description.
