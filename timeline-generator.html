@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeline Builder</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="ico/tbico.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="ico/tbico.jpg">
+<link rel="apple-touch-icon" href="ico/tbico.jpg">
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Timeline Builder is a free online tool for creating clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta name="keywords" content="timeline builder, timeline maker, visual timeline, create timeline, timeline generator, history timeline, project timeline, printable timeline">
+<meta name="author" content="Timeline Builder">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Timeline Builder">
+<meta property="og:description" content="Create clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta property="og:image" content="ico/tbico.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Timeline Builder">
+<meta name="twitter:description" content="Create clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta name="twitter:image" content="ico/tbico.jpg">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#16213E;
+    --ink-soft:#2B3358;
+    --paper:#F5F2EA;
+    --paper-dim:#EAE5D8;
+    --teal:#2E6F6E;
+    --mustard:#D9A441;
+    --rust:#B4552F;
+    --charcoal:#24262B;
+    --line:#D8D2C2;
+    --white:#FFFFFF;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:"Source Sans Pro","Segoe UI",Arial,sans-serif;
+    min-height:100vh;
+  }
+  .app{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    min-height:100vh;
+  }
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    background:var(--ink);
+    color:var(--paper);
+    padding:28px 24px 60px;
+    overflow-y:auto;
+    max-height:100vh;
+    position:sticky;
+    top:0;
+  }
+  .brand{
+    font-family:"Lora","Georgia",serif;
+    font-size:26px;
+    letter-spacing:0.3px;
+    margin:0 0 2px;
+    color:var(--white);
+  }
+  .brand-sub{
+    font-size:12.5px;
+    color:#AEB6D4;
+    margin:0 0 26px;
+    line-height:1.5;
+  }
+  .panel{
+    margin-bottom:26px;
+    padding-bottom:22px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .panel:last-of-type{border-bottom:none;}
+  .panel h2{
+    font-family:"Lora","Georgia",serif;
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--mustard);
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .panel h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;height:20px;
+    border:1px solid var(--mustard);
+    border-radius:50%;
+    font-size:11px;
+    color:var(--mustard);
+    font-family:"Source Sans Pro",Arial,sans-serif;
+  }
+  label{
+    display:block;
+    font-size:11.5px;
+    color:#C7CCE3;
+    margin-bottom:6px;
+    margin-top:14px;
+  }
+  label:first-of-type{margin-top:0;}
+  select, input[type=text], input[type=number], input[type=color]{
+    width:100%;
+    padding:8px 10px;
+    background:var(--ink-soft);
+    border:1px solid rgba(255,255,255,0.18);
+    color:var(--white);
+    border-radius:var(--radius);
+    font-size:13.5px;
+    font-family:inherit;
+  }
+  input[type=color]{padding:3px 4px;height:34px;cursor:pointer;}
+  select:focus, input:focus{outline:2px solid var(--teal); outline-offset:1px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .hint{font-size:11px; color:#8b93b8; margin-top:6px; line-height:1.5;}
+
+  .style-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:6px;
+  }
+  .style-opt{
+    border:1.5px solid rgba(255,255,255,0.18);
+    border-radius:var(--radius);
+    padding:10px 8px;
+    cursor:pointer;
+    text-align:center;
+    font-size:11.5px;
+    color:#D7DBEC;
+    background:var(--ink-soft);
+    transition:border-color .12s;
+  }
+  .style-opt.active{
+    border-color:var(--mustard);
+    color:var(--mustard);
+  }
+  .style-opt svg{display:block; margin:0 auto 6px; width:100%; height:28px;}
+
+  .swatches{display:flex; gap:7px; flex-wrap:wrap; margin-top:8px;}
+  .swatch{
+    width:24px;height:24px;border-radius:50%;
+    cursor:pointer; border:2px solid rgba(255,255,255,0.3);
+  }
+  .swatch.active{border-color:var(--white); box-shadow:0 0 0 2px var(--mustard);}
+
+  /* ITEM CARDS in sidebar */
+  .items-list{margin-top:14px; display:flex; flex-direction:column; gap:10px;}
+  .item-card{
+    background:var(--ink-soft);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:var(--radius);
+    padding:12px;
+  }
+  .item-card-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:2px;
+    cursor:pointer;
+  }
+  .item-card-title{
+    font-size:13px; font-weight:600; color:var(--white);
+    display:flex; align-items:center; gap:8px;
+    overflow:hidden;
+  }
+  .item-dot{width:10px;height:10px;border-radius:50%; flex-shrink:0;}
+  .item-card-title span{
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:190px;
+  }
+  .icon-btn{
+    background:none; border:none; color:#AEB6D4; cursor:pointer;
+    font-size:15px; padding:2px 6px; line-height:1;
+  }
+  .icon-btn:hover{color:var(--mustard);}
+  .item-body{margin-top:10px; display:none;}
+  .item-body.open{display:block;}
+  textarea{
+    width:100%; min-height:64px; resize:vertical;
+    background:var(--ink-soft); border:1px solid rgba(255,255,255,0.18);
+    color:var(--white); border-radius:var(--radius); padding:8px 10px;
+    font-family:inherit; font-size:13px;
+  }
+  .img-row{display:flex; align-items:center; gap:10px; margin-top:8px;}
+  .img-thumb{
+    width:44px;height:44px;border-radius:var(--radius);
+    object-fit:cover; border:1px solid rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.05);
+  }
+  .file-btn{
+    font-size:11.5px; padding:7px 10px; border-radius:var(--radius);
+    border:1px solid rgba(255,255,255,0.25); background:transparent;
+    color:#D7DBEC; cursor:pointer;
+  }
+  .file-btn:hover{border-color:var(--mustard); color:var(--mustard);}
+  .remove-img{font-size:11px; color:#e08a6a; background:none; border:none; cursor:pointer; text-decoration:underline;}
+
+  .add-btn{
+    width:100%; margin-top:12px;
+    padding:11px; border-radius:var(--radius);
+    border:1.5px dashed rgba(255,255,255,0.35);
+    background:transparent; color:var(--paper);
+    font-size:13px; cursor:pointer; font-weight:600;
+    letter-spacing:0.2px;
+  }
+  .add-btn:hover{border-color:var(--mustard); color:var(--mustard);}
+
+  .btn{
+    padding:10px 14px; border-radius:var(--radius);
+    border:none; font-size:13px; font-weight:600; cursor:pointer;
+    font-family:inherit;
+  }
+  .btn-primary{background:var(--mustard); color:var(--ink);}
+  .btn-primary:hover{background:#e6b559;}
+  .export-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px;}
+  .export-grid .btn{background:var(--ink-soft); color:var(--white); border:1px solid rgba(255,255,255,0.2);}
+  .export-grid .btn:hover{border-color:var(--mustard); color:var(--mustard);}
+
+  /* ---------- PREVIEW SIDE ---------- */
+  .preview-wrap{
+    padding:40px 44px;
+    overflow-x:auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .preview-toolbar{
+    width:100%;
+    max-width:1200px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+  }
+  .preview-toolbar .status{
+    font-size:12.5px; color:#77796f;
+  }
+  .zoom-controls{display:flex; align-items:center; gap:8px;}
+  .zoom-controls button{
+    background:var(--white); border:1px solid var(--line);
+    width:28px;height:28px; border-radius:var(--radius); cursor:pointer; font-size:14px;
+  }
+  .zoom-controls span{font-size:12px; color:#77796f; width:42px; text-align:center; display:inline-block;}
+
+  #canvasArea{
+    background:#FFFFFF;
+    display:inline-block;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08), 0 12px 32px rgba(22,33,62,0.10);
+  }
+
+  /* ===== TIMELINE RENDER STYLES (exported look) ===== */
+  #tlRoot{
+    background:#ffffff;
+    padding:56px 48px;
+  }
+  #tlRoot .tl-header{
+    text-align:center;
+    margin-bottom:46px;
+  }
+  #tlRoot .tl-title{
+    margin:0;
+    line-height:1.05;
+  }
+  #tlRoot .tl-subtitle{
+    margin:8px 0 0;
+    opacity:0.65;
+  }
+
+  /* Layout: vertical alternating */
+  .layout-vertical .tl-track{
+    position:relative;
+    max-width:900px;
+    margin:0 auto;
+  }
+  .layout-vertical .tl-spine{
+    position:absolute;
+    left:50%; top:0; bottom:0;
+    width:3px;
+    transform:translateX(-50%);
+  }
+  .layout-vertical .tl-row{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 60px 1fr;
+    align-items:start;
+    margin-bottom:8px;
+  }
+  .layout-vertical .tl-node{
+    grid-column:2;
+    justify-self:center;
+    width:18px;height:18px;
+    border-radius:50%;
+    border:4px solid #fff;
+    box-shadow:0 0 0 2px currentColor;
+    margin-top:6px;
+    z-index:2;
+  }
+  .layout-vertical .tl-side{padding:0 26px; padding-bottom:44px;}
+  .layout-vertical .tl-row.left .tl-content{ text-align:right; margin-left:auto;}
+  .layout-vertical .tl-row.right .tl-content{grid-column:3;}
+  .layout-vertical .tl-row.right .tl-side.empty{grid-column:1;}
+  .layout-vertical .tl-row.left .tl-side.filled{grid-column:1;}
+  .layout-vertical .tl-row.left .tl-side.empty{grid-column:3;}
+
+  .tl-content{
+    display:inline-block;
+    max-width:100%;
+    padding:16px 20px;
+    border-radius:var(--card-radius,6px);
+    text-align:left;
+  }
+  .tl-date{
+    display:inline-block;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:8px;
+  }
+  .tl-item-title{margin:0 0 6px; line-height:1.2;}
+  .tl-item-desc{margin:0; line-height:1.5; opacity:0.85;}
+  .tl-img{
+    display:block; width:100%; max-height:150px; object-fit:cover;
+    border-radius:4px; margin-bottom:10px;
+  }
+
+  /* Layout: left-aligned list */
+  .layout-list .tl-track{max-width:760px; margin:0 auto; position:relative;}
+  .layout-list .tl-spine{position:absolute; left:29px; top:6px; bottom:6px; width:3px;}
+  .layout-list .tl-row{display:grid; grid-template-columns:60px 1fr; margin-bottom:30px; position:relative;}
+  .layout-list .tl-node{
+    width:18px;height:18px;border-radius:50%;
+    border:4px solid #fff; box-shadow:0 0 0 2px currentColor;
+    margin-left:21px; margin-top:4px; z-index:2;
+  }
+  .layout-list .tl-content{padding:14px 18px; width:100%;}
+
+  /* Layout: horizontal (like reference banner) */
+  .layout-horizontal .tl-track{
+    display:flex;
+    overflow-x:visible;
+  }
+  .layout-horizontal .tl-col{
+    flex:1 1 0;
+    min-width:170px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .layout-horizontal .tl-icon-row{
+    height:26px; margin-bottom:10px; opacity:0.55; font-size:13px; text-align:center;
+  }
+  .layout-horizontal .tl-date-block{
+    width:100%;
+    text-align:center;
+    padding:14px 6px;
+    font-weight:800;
+  }
+  .layout-horizontal .tl-spine-h{height:4px; width:100%;}
+  .layout-horizontal .tl-below, .layout-horizontal .tl-above{
+    padding:16px 12px;
+    min-height:150px;
+    width:88%;
+    border-radius:6px;
+    margin-top:14px;
+  }
+  .layout-horizontal .tl-col.up .tl-above{order:-1; margin-top:0; margin-bottom:14px;}
+
+  /* Layout: minimal cards grid */
+  .layout-grid .tl-track{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:20px;
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .layout-grid .tl-col{
+    border-radius:8px;
+    padding:20px;
+    position:relative;
+  }
+  .layout-grid .tl-date{margin-bottom:10px;}
+
+  .credit-mark{
+    text-align:center; margin-top:40px; font-size:10.5px; opacity:0.35;
+  }
+
+  /* Layout: chevron ribbon (built entirely from flex rows + border-triangles,
+     no CSS Grid and no clip-path, so it exports reliably) */
+  .layout-chevron .tl-rowline{
+    display:flex;
+    flex-direction:row;
+    align-items:stretch;
+  }
+  .layout-chevron .tl-cell{
+    flex:1 1 0;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0 10px;
+  }
+  .layout-chevron .tl-row-above .tl-cell{justify-content:flex-end;}
+  .layout-chevron .tl-row-below .tl-cell{justify-content:flex-start;}
+  .layout-chevron .tl-txt{text-align:center; width:100%;}
+  .layout-chevron .tl-row-above .tl-txt{padding-bottom:6px;}
+  .layout-chevron .tl-row-below .tl-txt{padding-top:6px;}
+  .layout-chevron .tl-connector{
+    width:2px;
+    height:20px;
+    background-image:linear-gradient(currentColor 55%, transparent 0%);
+    background-position:top;
+    background-size:2px 8px;
+    background-repeat:repeat-y;
+  }
+  .layout-chevron .tl-dot{
+    width:9px; height:9px; border-radius:50%;
+    background:currentColor;
+  }
+  .layout-chevron .tl-chevron-cell{
+    flex:1 1 0;
+    min-width:0;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:56px;
+    color:#fff;
+    font-weight:800;
+    overflow:visible;
+  }
+  .layout-chevron .tl-tri-right{
+    position:absolute;
+    top:0; right:-28px;
+    width:0; height:0;
+    border-top:28px solid transparent;
+    border-bottom:28px solid transparent;
+    border-left:28px solid transparent;
+    z-index:2;
+  }
+
+  /* Layout: axis ruler (also plain flex rows, no grid) */
+  .layout-axis .tl-rowline{
+    display:flex;
+    flex-direction:row;
+  }
+  .layout-axis .tl-cell{
+    flex:1 1 0;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0 8px;
+  }
+  .layout-axis .tl-row-above .tl-cell{justify-content:flex-end;}
+  .layout-axis .tl-row-below .tl-cell{justify-content:flex-start;}
+  .layout-axis .tl-txt{text-align:center; width:100%;}
+  .layout-axis .tl-arrow{
+    font-size:20px;
+    line-height:1;
+    font-weight:700;
+  }
+  .layout-axis .tl-row-above .tl-txt{margin-bottom:4px;}
+  .layout-axis .tl-row-below .tl-txt{margin-top:4px;}
+  .layout-axis .tl-bar-cell{
+    flex:1 1 0;
+    min-width:0;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .layout-axis .tl-date-cell{
+    flex:1 1 0;
+    min-width:0;
+    text-align:center;
+    font-weight:800;
+    padding:6px 0;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <h1 class="brand">Timeline Builder</h1>
+    <p class="brand-sub">Configure events, styling, and export a finished timeline as an image or PDF.</p>
+
+    <!-- 1. Header text -->
+    <div class="panel">
+      <h2><span class="num">1</span>Title</h2>
+      <label>Main heading</label>
+      <input type="text" id="mainTitle" value="TIMELINE">
+      <label>Subheading</label>
+      <input type="text" id="subTitle" value="Iunno something I guess">
+    </div>
+
+    <!-- 2. Layout style -->
+    <div class="panel">
+      <h2><span class="num">2</span>Layout style</h2>
+      <div class="style-grid" id="layoutGrid">
+        <div class="style-opt active" data-layout="vertical">
+          <svg viewBox="0 0 60 28"><line x1="30" y1="2" x2="30" y2="26" stroke="currentColor" stroke-width="2"/><rect x="6" y="4" width="18" height="8" fill="currentColor" opacity="0.6"/><rect x="36" y="16" width="18" height="8" fill="currentColor" opacity="0.6"/></svg>
+          Alternating
+        </div>
+        <div class="style-opt" data-layout="list">
+          <svg viewBox="0 0 60 28"><line x1="10" y1="2" x2="10" y2="26" stroke="currentColor" stroke-width="2"/><rect x="16" y="3" width="38" height="6" fill="currentColor" opacity="0.6"/><rect x="16" y="12" width="38" height="6" fill="currentColor" opacity="0.6"/><rect x="16" y="21" width="38" height="6" fill="currentColor" opacity="0.6"/></svg>
+          Left list
+        </div>
+        <div class="style-opt" data-layout="horizontal">
+          <svg viewBox="0 0 60 28"><line x1="2" y1="14" x2="58" y2="14" stroke="currentColor" stroke-width="2"/><rect x="4" y="16" width="12" height="9" fill="currentColor" opacity="0.6"/><rect x="24" y="2" width="12" height="9" fill="currentColor" opacity="0.6"/><rect x="44" y="16" width="12" height="9" fill="currentColor" opacity="0.6"/></svg>
+          Horizontal
+        </div>
+        <div class="style-opt" data-layout="grid">
+          <svg viewBox="0 0 60 28"><rect x="3" y="3" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="33" y="3" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="3" y="16" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="33" y="16" width="24" height="10" fill="currentColor" opacity="0.6"/></svg>
+          Card grid
+        </div>
+        <div class="style-opt" data-layout="chevron">
+          <svg viewBox="0 0 60 28"><rect x="4" y="2" width="10" height="8" fill="currentColor" opacity="0.5"/><polygon points="16,10 26,10 30,14 26,18 16,18 20,14" fill="currentColor" opacity="0.8"/><rect x="34" y="18" width="10" height="8" fill="currentColor" opacity="0.5"/><polygon points="30,10 40,10 44,14 40,18 30,18 34,14" fill="currentColor" opacity="0.8"/></svg>
+          Chevron ribbon
+        </div>
+        <div class="style-opt" data-layout="axis">
+          <svg viewBox="0 0 60 28"><rect x="4" y="20" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="26" y="2" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="48" y="20" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="2" y="12" width="56" height="5" fill="currentColor" opacity="0.8"/></svg>
+          Axis ruler
+        </div>
+      </div>
+      <div class="hint">"Chevron ribbon" and "Axis ruler" are built for wide, landscape canvases. "Alternating" and "Left list" scale to any number of events and suit portrait.</div>
+      <label>Canvas orientation</label>
+      <select id="orientation">
+        <option value="landscape" selected>Landscape (wide)</option>
+        <option value="square">Square</option>
+        <option value="portrait">Portrait (tall)</option>
+      </select>
+    </div>
+
+    <!-- 3. Color theme -->
+    <div class="panel">
+      <h2><span class="num">3</span>Color palette</h2>
+      <div class="swatches" id="paletteSwatches"></div>
+      <label style="margin-top:14px;">Background</label>
+      <div class="row2">
+        <input type="color" id="bgColor" value="#ffffff">
+        <select id="bgPreset">
+          <option value="#ffffff">White</option>
+          <option value="#F7F5F0">Warm paper</option>
+          <option value="#111318">Ink (dark mode)</option>
+          <option value="#EAF2F2">Pale teal</option>
+        </select>
+      </div>
+      <label>Card corner style</label>
+      <select id="cardRadius">
+        <option value="14">Rounded</option>
+        <option value="4" selected>Soft square</option>
+        <option value="0">Sharp square</option>
+      </select>
+    </div>
+
+    <!-- 4. Typography -->
+    <div class="panel">
+      <h2><span class="num">4</span>Typography</h2>
+      <label>Font family</label>
+      <select id="fontFamily">
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="Arial, Helvetica, sans-serif" selected>Arial</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Courier New', Courier, monospace">Courier New</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+        <option value="'Palatino Linotype', Palatino, serif">Palatino</option>
+      </select>
+      <div class="row2">
+        <div>
+          <label>Heading size (px)</label>
+          <input type="number" id="titleSize" value="42" min="16" max="96">
+        </div>
+        <div>
+          <label>Body size (px)</label>
+          <input type="number" id="bodySize" value="14" min="9" max="28">
+        </div>
+      </div>
+      <label>Event title weight</label>
+      <select id="itemTitleWeight">
+        <option value="600">Medium</option>
+        <option value="700" selected>Bold</option>
+        <option value="800">Extra bold</option>
+      </select>
+    </div>
+
+    <!-- 5. Events -->
+    <div class="panel">
+      <h2><span class="num">5</span>Events</h2>
+      <div class="items-list" id="itemsList"></div>
+      <button class="add-btn" id="addItemBtn">+ Add event</button>
+    </div>
+
+    <!-- 6. Export -->
+    <div class="panel">
+      <h2><span class="num">6</span>Export</h2>
+      <label>File name</label>
+      <input type="text" id="fileName" value="my-timeline">
+      <label>Export resolution</label>
+      <select id="exportScale">
+        <option value="1">Standard (1x)</option>
+        <option value="2" selected>High (2x)</option>
+        <option value="3">Ultra (3x)</option>
+      </select>
+      <div class="export-grid">
+        <button class="btn" data-format="png">Export PNG</button>
+        <button class="btn" data-format="jpeg">Export JPEG</button>
+        <button class="btn" data-format="webp">Export WEBP</button>
+        <button class="btn" data-format="pdf">Export PDF</button>
+      </div>
+      <div class="hint" id="exportStatus"></div>
+    </div>
+  </aside>
+
+  <!-- ============ PREVIEW ============ -->
+  <main class="preview-wrap">
+    <div class="preview-toolbar">
+      <div class="status">Live preview — this is exactly what gets exported.</div>
+      <div class="zoom-controls">
+        <button id="zoomOut">–</button>
+        <span id="zoomLabel">80%</span>
+        <button id="zoomIn">+</button>
+      </div>
+    </div>
+    <div id="canvasArea">
+      <div id="tlRoot" class="layout-vertical">
+        <div class="tl-header">
+          <h1 class="tl-title" id="renderTitle">TIMELINE</h1>
+          <p class="tl-subtitle" id="renderSubtitle">Iunno something I guess</p>
+        </div>
+        <div class="tl-track" id="tlTrack"></div>
+        <div class="credit-mark">made with Timeline Builder</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// STATE
+// ---------------------------------------------------------------
+const PALETTES = [
+  ['#E8833A','#E3B23C','#7C8A3E','#3FB6B0','#D94F7C','#B5651D','#2E7FB8'],
+  ['#2E6F6E','#3F9C8E','#8FBF6E','#D9A441','#B4552F','#6C5B7B','#355C7D'],
+  ['#264653','#2A9D8F','#E9C46A','#F4A261','#E76F51','#8AB17D','#606C38'],
+  ['#5B2A86','#8E44AD','#C0392B','#D35400','#16A085','#2980B9','#7F8C8D'],
+  ['#111318','#3A3A3A','#6B6B6B','#9A9A9A','#C4C4C4','#4B4B4B','#1F1F1F'],
+];
+
+let state = {
+  layout: 'vertical',
+  paletteIndex: 0,
+  bg: '#ffffff',
+  cardRadius: 4,
+  fontFamily: "Arial, Helvetica, sans-serif",
+  titleSize: 42,
+  bodySize: 14,
+  itemTitleWeight: 700,
+  mainTitle: 'TIMELINE',
+  subTitle: 'Iunno something I guess',
+  items: []
+};
+
+let idCounter = 0;
+function newItem(overrides){
+  idCounter += 1;
+  const palette = PALETTES[state.paletteIndex];
+  return Object.assign({
+    id: 'it'+idCounter,
+    date: '',
+    title: '',
+    desc: '',
+    color: palette[(idCounter-1) % palette.length],
+    image: null,
+    open: true
+  }, overrides || {});
+}
+
+// seed with the same joke placeholder content used for new events, so the
+// tool is obviously a blank template rather than someone else's example
+state.items = [
+  newItem({date:'2000 (put the date here, bro)', title:"TITLE (you know, like the book's name or whatever)", desc:'BODY (write what you want in here, like what happened during that time)'}),
+  newItem({date:'2010 (put the date here, bro)', title:"TITLE (you know, like the book's name or whatever)", desc:'BODY (write what you want in here, like what happened during that time)'}),
+  newItem({date:'2020 (put the date here, bro)', title:"TITLE (you know, like the book's name or whatever)", desc:'BODY (write what you want in here, like what happened during that time)'}),
+];
+
+// ---------------------------------------------------------------
+// SIDEBAR: palette swatches
+// ---------------------------------------------------------------
+const paletteSwatchesEl = document.getElementById('paletteSwatches');
+function renderPaletteSwatches(){
+  paletteSwatchesEl.innerHTML = '';
+  PALETTES.forEach((pal, i)=>{
+    const sw = document.createElement('div');
+    sw.className = 'swatch' + (i===state.paletteIndex ? ' active':'');
+    sw.style.background = `linear-gradient(135deg, ${pal[0]}, ${pal[2]}, ${pal[4]})`;
+    sw.title = 'Palette ' + (i+1);
+    sw.addEventListener('click', ()=>{
+      state.paletteIndex = i;
+      // reassign colors to items in order, cycling
+      state.items.forEach((it, idx)=> it.color = PALETTES[i][idx % PALETTES[i].length]);
+      renderPaletteSwatches();
+      renderItemsList();
+      renderTimeline();
+    });
+    paletteSwatchesEl.appendChild(sw);
+  });
+}
+renderPaletteSwatches();
+
+// ---------------------------------------------------------------
+// SIDEBAR: layout selector
+// ---------------------------------------------------------------
+document.getElementById('layoutGrid').addEventListener('click', (e)=>{
+  const opt = e.target.closest('.style-opt');
+  if(!opt) return;
+  document.querySelectorAll('#layoutGrid .style-opt').forEach(o=>o.classList.remove('active'));
+  opt.classList.add('active');
+  state.layout = opt.dataset.layout;
+  applyOrientationWidth();
+  renderTimeline();
+});
+
+// ---------------------------------------------------------------
+// ORIENTATION (canvas width preset -> landscape / square / portrait)
+// ---------------------------------------------------------------
+const ORIENTATION_WIDTHS = { landscape: 1680, square: 1150, portrait: 820 };
+state.orientation = 'landscape';
+document.getElementById('orientation').addEventListener('change', e=>{
+  state.orientation = e.target.value;
+  applyOrientationWidth();
+});
+function applyOrientationWidth(){
+  const w = ORIENTATION_WIDTHS[state.orientation];
+  tlRoot.style.width = w + 'px';
+}
+
+// ---------------------------------------------------------------
+// SIDEBAR: header text
+// ---------------------------------------------------------------
+document.getElementById('mainTitle').addEventListener('input', e=>{
+  state.mainTitle = e.target.value;
+  document.getElementById('renderTitle').textContent = state.mainTitle;
+});
+document.getElementById('subTitle').addEventListener('input', e=>{
+  state.subTitle = e.target.value;
+  document.getElementById('renderSubtitle').textContent = state.subTitle;
+});
+
+// ---------------------------------------------------------------
+// SIDEBAR: background & card radius
+// ---------------------------------------------------------------
+const bgColorInput = document.getElementById('bgColor');
+const bgPreset = document.getElementById('bgPreset');
+bgColorInput.addEventListener('input', e=>{ state.bg = e.target.value; applyGlobalStyles(); });
+bgPreset.addEventListener('change', e=>{
+  state.bg = e.target.value;
+  bgColorInput.value = e.target.value;
+  applyGlobalStyles();
+});
+document.getElementById('cardRadius').addEventListener('change', e=>{
+  state.cardRadius = parseInt(e.target.value,10);
+  applyGlobalStyles();
+});
+
+// ---------------------------------------------------------------
+// SIDEBAR: typography
+// ---------------------------------------------------------------
+document.getElementById('fontFamily').addEventListener('change', e=>{
+  state.fontFamily = e.target.value;
+  applyGlobalStyles();
+});
+document.getElementById('titleSize').addEventListener('input', e=>{
+  state.titleSize = parseInt(e.target.value,10) || 42;
+  applyGlobalStyles();
+});
+document.getElementById('bodySize').addEventListener('input', e=>{
+  state.bodySize = parseInt(e.target.value,10) || 14;
+  applyGlobalStyles();
+});
+document.getElementById('itemTitleWeight').addEventListener('change', e=>{
+  state.itemTitleWeight = e.target.value;
+  applyGlobalStyles();
+});
+
+function applyGlobalStyles(){
+  const root = document.getElementById('tlRoot');
+  root.style.background = state.bg;
+  root.style.fontFamily = state.fontFamily;
+  root.style.setProperty('--card-radius', state.cardRadius + 'px');
+  // dark bg -> flip base text color
+  const isDark = isColorDark(state.bg);
+  root.style.color = isDark ? '#F2F0EA' : '#1c1e24';
+
+  document.getElementById('renderTitle').style.fontSize = state.titleSize + 'px';
+  document.getElementById('renderTitle').style.fontFamily = state.fontFamily;
+  document.getElementById('renderSubtitle').style.fontSize = (state.bodySize + 3) + 'px';
+  document.querySelectorAll('.tl-item-desc, .tl-item-title, .tl-date').forEach(()=>{});
+  renderTimeline();
+}
+
+function isColorDark(hex){
+  hex = hex.replace('#','');
+  if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b);
+  return lum < 140;
+}
+
+function readableTextColor(bgHex){
+  return isColorDark(bgHex) ? '#ffffff' : '#1c1e24';
+}
+
+function tint(hex, amount){
+  // amount 0..1 -> lighten
+  hex = hex.replace('#','');
+  if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
+  const nr = Math.round(r + (255-r)*amount);
+  const ng = Math.round(g + (255-g)*amount);
+  const nb = Math.round(b + (255-b)*amount);
+  return `rgb(${nr},${ng},${nb})`;
+}
+
+// ---------------------------------------------------------------
+// ITEMS: sidebar list rendering
+// ---------------------------------------------------------------
+const itemsListEl = document.getElementById('itemsList');
+
+function renderItemsList(){
+  itemsListEl.innerHTML = '';
+  state.items.forEach((it, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'item-card';
+
+    const head = document.createElement('div');
+    head.className = 'item-card-head';
+    head.innerHTML = `
+      <div class="item-card-title">
+        <span class="item-dot" style="background:${it.color}"></span>
+        <span>${escapeHtml(it.date || 'Date')} · ${escapeHtml(it.title || 'Untitled event')}</span>
+      </div>
+    `;
+    const btnWrap = document.createElement('div');
+    const upBtn = document.createElement('button');
+    upBtn.className = 'icon-btn'; upBtn.title='Move up'; upBtn.innerHTML='&#8593;';
+    upBtn.addEventListener('click', (e)=>{e.stopPropagation(); moveItem(idx,-1);});
+    const downBtn = document.createElement('button');
+    downBtn.className = 'icon-btn'; downBtn.title='Move down'; downBtn.innerHTML='&#8595;';
+    downBtn.addEventListener('click', (e)=>{e.stopPropagation(); moveItem(idx,1);});
+    const delBtn = document.createElement('button');
+    delBtn.className = 'icon-btn'; delBtn.title='Delete'; delBtn.innerHTML='&#10005;';
+    delBtn.addEventListener('click', (e)=>{e.stopPropagation(); state.items.splice(idx,1); renderItemsList(); renderTimeline();});
+    btnWrap.appendChild(upBtn); btnWrap.appendChild(downBtn); btnWrap.appendChild(delBtn);
+    head.appendChild(btnWrap);
+    head.addEventListener('click', ()=>{ it.open = !it.open; renderItemsList(); });
+
+    const body = document.createElement('div');
+    body.className = 'item-body' + (it.open ? ' open':'');
+
+    body.innerHTML = `
+      <label>Date / label</label>
+      <input type="text" class="f-date" value="${escapeAttr(it.date)}" placeholder="2000 (put the date here, bro)">
+      <label>Event title</label>
+      <input type="text" class="f-title" value="${escapeAttr(it.title)}" placeholder="TITLE (you know, like the book's name or whatever)">
+      <label>Description</label>
+      <textarea class="f-desc" placeholder="BODY (write what you want in here, like what happened during that time)">${escapeHtml(it.desc)}</textarea>
+      <label>Accent color</label>
+      <input type="color" class="f-color" value="${it.color}">
+      <label>Image (optional)</label>
+      <div class="img-row">
+        ${it.image ? `<img class="img-thumb" src="${it.image}">` : `<div class="img-thumb" style="display:flex;align-items:center;justify-content:center;font-size:9px;color:#8b93b8;">none</div>`}
+        <button class="file-btn f-imgbtn">${it.image ? 'Replace' : 'Upload'}</button>
+        ${it.image ? '<button class="remove-img f-imgremove">Remove</button>' : ''}
+        <input type="file" accept="image/*" class="f-imgfile" style="display:none;">
+      </div>
+    `;
+
+    body.querySelector('.f-date').addEventListener('input', e=>{ it.date = e.target.value; head.querySelector('span:last-child').textContent = `${it.date||'Date'} · ${it.title||'Untitled event'}`; renderTimeline(); });
+    body.querySelector('.f-title').addEventListener('input', e=>{ it.title = e.target.value; head.querySelector('span:last-child').textContent = `${it.date||'Date'} · ${it.title||'Untitled event'}`; renderTimeline(); });
+    body.querySelector('.f-desc').addEventListener('input', e=>{ it.desc = e.target.value; renderTimeline(); });
+    body.querySelector('.f-color').addEventListener('input', e=>{ it.color = e.target.value; head.querySelector('.item-dot').style.background = it.color; renderTimeline(); });
+
+    const fileInput = body.querySelector('.f-imgfile');
+    body.querySelector('.f-imgbtn').addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev)=>{
+        it.image = ev.target.result;
+        renderItemsList();
+        renderTimeline();
+      };
+      reader.readAsDataURL(file);
+    });
+    const removeBtn = body.querySelector('.f-imgremove');
+    if(removeBtn){
+      removeBtn.addEventListener('click', ()=>{ it.image = null; renderItemsList(); renderTimeline(); });
+    }
+
+    card.appendChild(head);
+    card.appendChild(body);
+    itemsListEl.appendChild(card);
+  });
+}
+
+function moveItem(idx, dir){
+  const newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= state.items.length) return;
+  const tmp = state.items[idx];
+  state.items[idx] = state.items[newIdx];
+  state.items[newIdx] = tmp;
+  renderItemsList();
+  renderTimeline();
+}
+
+document.getElementById('addItemBtn').addEventListener('click', ()=>{
+  const it = newItem({
+    date:'2000 (put the date here, bro)',
+    title:"TITLE (you know, like the book's name or whatever)",
+    desc:'BODY (write what you want in here, like what happened during that time)'
+  });
+  it.open = true;
+  state.items.push(it);
+  renderItemsList();
+  renderTimeline();
+});
+
+function escapeHtml(str){
+  return String(str||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(str){ return escapeHtml(str); }
+
+// ---------------------------------------------------------------
+// TIMELINE RENDERING (the exportable canvas)
+// ---------------------------------------------------------------
+const tlRoot = document.getElementById('tlRoot');
+const tlTrack = document.getElementById('tlTrack');
+
+function renderTimeline(){
+  tlRoot.className = 'layout-' + state.layout;
+  tlTrack.innerHTML = '';
+  tlTrack.style.gridTemplateColumns = '';
+
+  const bodyPx = state.bodySize + 'px';
+  const titleFontWeight = state.itemTitleWeight;
+
+  if(state.layout === 'vertical'){
+    const spine = document.createElement('div');
+    spine.className = 'tl-spine';
+    spine.style.background = '#DDD8C8';
+    tlTrack.appendChild(spine);
+
+    state.items.forEach((it, idx)=>{
+      const isLeft = idx % 2 === 0;
+      const row = document.createElement('div');
+      row.className = 'tl-row ' + (isLeft ? 'left':'right');
+
+      const sideFilled = document.createElement('div');
+      sideFilled.className = 'tl-side filled';
+      sideFilled.innerHTML = buildCardHTML(it, bodyPx, titleFontWeight);
+
+      const sideEmpty = document.createElement('div');
+      sideEmpty.className = 'tl-side empty';
+
+      const node = document.createElement('div');
+      node.className = 'tl-node';
+      node.style.color = it.color;
+      node.style.background = it.color;
+
+      if(isLeft){
+        row.appendChild(sideFilled);
+        row.appendChild(node);
+        row.appendChild(sideEmpty);
+      } else {
+        row.appendChild(sideEmpty);
+        row.appendChild(node);
+        row.appendChild(sideFilled);
+      }
+      tlTrack.appendChild(row);
+    });
+  }
+
+  else if(state.layout === 'list'){
+    const spine = document.createElement('div');
+    spine.className = 'tl-spine';
+    spine.style.background = '#DDD8C8';
+    tlTrack.appendChild(spine);
+
+    state.items.forEach(it=>{
+      const row = document.createElement('div');
+      row.className = 'tl-row';
+      const node = document.createElement('div');
+      node.className = 'tl-node';
+      node.style.color = it.color;
+      node.style.background = it.color;
+      const content = document.createElement('div');
+      content.innerHTML = buildCardHTML(it, bodyPx, titleFontWeight);
+      row.appendChild(node);
+      row.appendChild(content.firstElementChild);
+      tlTrack.appendChild(row);
+    });
+  }
+
+  else if(state.layout === 'horizontal'){
+    state.items.forEach((it, idx)=>{
+      const col = document.createElement('div');
+      col.className = 'tl-col' + (idx % 2 === 1 ? ' up' : '');
+
+      const iconRow = document.createElement('div');
+      iconRow.className = 'tl-icon-row';
+      iconRow.textContent = '●';
+      iconRow.style.color = it.color;
+
+      const dateBlock = document.createElement('div');
+      dateBlock.className = 'tl-date-block';
+      dateBlock.textContent = it.date || '—';
+      dateBlock.style.background = it.color;
+      dateBlock.style.color = readableTextColor(it.color);
+      dateBlock.style.fontSize = (state.bodySize + 8) + 'px';
+
+      const spineH = document.createElement('div');
+      spineH.className = 'tl-spine-h';
+      spineH.style.background = it.color;
+
+      const contentWrap = document.createElement('div');
+      contentWrap.className = idx % 2 === 1 ? 'tl-above' : 'tl-below';
+      contentWrap.style.background = tint(it.color, 0.85);
+      contentWrap.innerHTML = `
+        ${it.image ? `<img class="tl-img" src="${it.image}">` : ''}
+        <h3 class="tl-item-title" style="font-weight:${titleFontWeight}; font-size:${state.bodySize+3}px; color:${it.color};">${escapeHtml(it.title)}</h3>
+        <p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p>
+      `;
+
+      col.appendChild(iconRow);
+      col.appendChild(dateBlock);
+      col.appendChild(spineH);
+      col.appendChild(contentWrap);
+      tlTrack.appendChild(col);
+    });
+  }
+
+  else if(state.layout === 'grid'){
+    state.items.forEach(it=>{
+      const col = document.createElement('div');
+      col.className = 'tl-col';
+      col.style.background = tint(it.color, 0.88);
+      col.style.borderTop = `5px solid ${it.color}`;
+      col.innerHTML = `
+        ${it.image ? `<img class="tl-img" src="${it.image}">` : ''}
+        <div class="tl-date" style="background:${it.color}; color:${readableTextColor(it.color)}; font-size:${state.bodySize-1}px;">${escapeHtml(it.date)}</div>
+        <h3 class="tl-item-title" style="font-weight:${titleFontWeight}; font-size:${state.bodySize+4}px; color:${it.color};">${escapeHtml(it.title)}</h3>
+        <p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p>
+      `;
+      tlTrack.appendChild(col);
+    });
+  }
+
+  else if(state.layout === 'chevron'){
+    const n = state.items.length;
+    const rowAbove = document.createElement('div');
+    rowAbove.className = 'tl-rowline tl-row-above';
+    const rowChevron = document.createElement('div');
+    rowChevron.className = 'tl-rowline tl-row-chevron';
+    const rowBelow = document.createElement('div');
+    rowBelow.className = 'tl-rowline tl-row-below';
+
+    state.items.forEach((it, idx)=>{
+      const textUp = idx % 2 === 0;
+      const textHTML = `
+        ${it.image ? `<img class="tl-img" style="max-height:90px;" src="${it.image}">` : ''}
+        <h3 class="tl-item-title" style="font-weight:${titleFontWeight}; font-size:${state.bodySize+4}px; color:${it.color};">${escapeHtml(it.title)}</h3>
+        <p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p>
+      `;
+
+      const aboveCell = document.createElement('div');
+      aboveCell.className = 'tl-cell';
+      aboveCell.style.color = it.color;
+      if(textUp){
+        aboveCell.innerHTML = `<div class="tl-txt">${textHTML}</div><div class="tl-connector"></div><div class="tl-dot"></div>`;
+      }
+      rowAbove.appendChild(aboveCell);
+
+      const chevronCell = document.createElement('div');
+      chevronCell.className = 'tl-chevron-cell';
+      chevronCell.style.background = it.color;
+      chevronCell.style.zIndex = n - idx;
+      chevronCell.style.fontSize = (state.bodySize + 4) + 'px';
+      chevronCell.style.fontWeight = titleFontWeight;
+      const label = document.createElement('span');
+      label.style.position = 'relative';
+      label.style.zIndex = '4';
+      label.textContent = it.date;
+      chevronCell.appendChild(label);
+      if(idx < n - 1){
+        const triRight = document.createElement('div');
+        triRight.className = 'tl-tri-right';
+        triRight.style.borderLeftColor = it.color;
+        chevronCell.appendChild(triRight);
+      }
+      rowChevron.appendChild(chevronCell);
+
+      const belowCell = document.createElement('div');
+      belowCell.className = 'tl-cell';
+      belowCell.style.color = it.color;
+      if(!textUp){
+        belowCell.innerHTML = `<div class="tl-dot"></div><div class="tl-connector"></div><div class="tl-txt">${textHTML}</div>`;
+      }
+      rowBelow.appendChild(belowCell);
+    });
+
+    tlTrack.appendChild(rowAbove);
+    tlTrack.appendChild(rowChevron);
+    tlTrack.appendChild(rowBelow);
+  }
+
+  else if(state.layout === 'axis'){
+    const rowAbove = document.createElement('div');
+    rowAbove.className = 'tl-rowline tl-row-above';
+    const rowBar = document.createElement('div');
+    rowBar.className = 'tl-rowline';
+    const rowDates = document.createElement('div');
+    rowDates.className = 'tl-rowline';
+    const rowBelow = document.createElement('div');
+    rowBelow.className = 'tl-rowline tl-row-below';
+
+    state.items.forEach((it, idx)=>{
+      const aboveCell = document.createElement('div');
+      aboveCell.className = 'tl-cell';
+      aboveCell.style.color = it.color;
+      if(idx % 2 === 0){
+        aboveCell.innerHTML = `<div class="tl-txt">${it.image ? `<img class="tl-img" style="max-height:90px;" src="${it.image}">` : ''}<h3 class="tl-item-title" style="font-weight:${titleFontWeight}; font-size:${state.bodySize+3}px; color:${it.color};">${escapeHtml(it.title)}</h3><p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p></div><div class="tl-arrow">&#8595;</div>`;
+      }
+      rowAbove.appendChild(aboveCell);
+
+      const barCell = document.createElement('div');
+      barCell.className = 'tl-bar-cell';
+      barCell.style.background = it.color;
+      rowBar.appendChild(barCell);
+
+      const dateCell = document.createElement('div');
+      dateCell.className = 'tl-date-cell';
+      dateCell.style.color = it.color;
+      dateCell.style.fontSize = (state.bodySize + 2) + 'px';
+      dateCell.textContent = it.date;
+      rowDates.appendChild(dateCell);
+
+      const belowCell = document.createElement('div');
+      belowCell.className = 'tl-cell';
+      belowCell.style.color = it.color;
+      if(idx % 2 === 1){
+        belowCell.innerHTML = `<div class="tl-arrow">&#8593;</div><div class="tl-txt">${it.image ? `<img class="tl-img" style="max-height:90px;" src="${it.image}">` : ''}<h3 class="tl-item-title" style="font-weight:${titleFontWeight}; font-size:${state.bodySize+3}px; color:${it.color};">${escapeHtml(it.title)}</h3><p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p></div>`;
+      }
+      rowBelow.appendChild(belowCell);
+    });
+
+    tlTrack.appendChild(rowAbove);
+    tlTrack.appendChild(rowBar);
+    tlTrack.appendChild(rowDates);
+    tlTrack.appendChild(rowBelow);
+  }
+}
+
+function buildCardHTML(it, bodyPx, titleWeight){
+  return `
+    <div class="tl-content" style="background:${tint(it.color,0.88)};">
+      ${it.image ? `<img class="tl-img" src="${it.image}">` : ''}
+      <div class="tl-date" style="background:${it.color}; color:${readableTextColor(it.color)}; font-size:${parseInt(bodyPx)-1}px;">${escapeHtml(it.date)}</div>
+      <h3 class="tl-item-title" style="font-weight:${titleWeight}; font-size:${parseInt(bodyPx)+4}px; color:${it.color};">${escapeHtml(it.title)}</h3>
+      <p class="tl-item-desc" style="font-size:${bodyPx};">${escapeHtml(it.desc)}</p>
+    </div>
+  `;
+}
+
+// ---------------------------------------------------------------
+// ZOOM
+// ---------------------------------------------------------------
+let zoom = 0.8;
+const canvasArea = document.getElementById('canvasArea');
+function applyZoom(){
+  canvasArea.style.transform = `scale(${zoom})`;
+  canvasArea.style.transformOrigin = 'top center';
+  document.getElementById('zoomLabel').textContent = Math.round(zoom*100) + '%';
+}
+document.getElementById('zoomIn').addEventListener('click', ()=>{ zoom = Math.min(1.5, zoom+0.1); applyZoom(); });
+document.getElementById('zoomOut').addEventListener('click', ()=>{ zoom = Math.max(0.3, zoom-0.1); applyZoom(); });
+
+// ---------------------------------------------------------------
+// EXPORT
+// ---------------------------------------------------------------
+const exportStatus = document.getElementById('exportStatus');
+
+async function captureCanvas(scale){
+  // temporarily reset zoom transform for accurate capture
+  const prevTransform = canvasArea.style.transform;
+  canvasArea.style.transform = 'none';
+  const canvas = await html2canvas(tlRoot, {
+    scale: scale,
+    backgroundColor: state.bg,
+    useCORS: true,
+    logging: false
+  });
+  canvasArea.style.transform = prevTransform;
+  return canvas;
+}
+
+document.querySelectorAll('.export-grid .btn').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const format = btn.dataset.format;
+    const scale = parseInt(document.getElementById('exportScale').value, 10);
+    const fileName = (document.getElementById('fileName').value || 'timeline').trim();
+    exportStatus.textContent = 'Rendering...';
+    btn.disabled = true;
+    try{
+      const canvas = await captureCanvas(scale);
+      if(format === 'pdf'){
+        const { jsPDF } = window.jspdf;
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: canvas.width >= canvas.height ? 'landscape' : 'portrait',
+          unit: 'px',
+          format: [canvas.width, canvas.height]
+        });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save(fileName + '.pdf');
+      } else {
+        const mime = format === 'jpeg' ? 'image/jpeg' : (format === 'webp' ? 'image/webp' : 'image/png');
+        const quality = format === 'png' ? undefined : 0.95;
+        canvas.toBlob((blob)=>{
+          if(!blob){ exportStatus.textContent = 'Export failed — this browser may not support WEBP encoding.'; return; }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName + '.' + format;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }, mime, quality);
+      }
+      exportStatus.textContent = 'Done — check your downloads.';
+    } catch(err){
+      console.error(err);
+      exportStatus.textContent = 'Something went wrong during export.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+});
+
+// ---------------------------------------------------------------
+// INIT
+// ---------------------------------------------------------------
+renderItemsList();
+applyOrientationWidth();
+applyGlobalStyles();
+applyZoom();
+</script>
+</body>
+</html>
