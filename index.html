@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolkit</title>
+    <meta name="description" content="A shelf of small web-based tools made because doing things manually got old. No ads, no subscriptions, no paywalls. Currently featuring Chartsmith, a chart generator.">
+    <meta name="keywords" content="toolkit, web tools, chart generator, chartsmith, online utilities, developer tools">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Toolkit">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Toolkit">
+    <meta property="og:description" content="A shelf of small web-based tools made because doing things manually got old. No ads, ever. Currently featuring Chartsmith, a chart generator.">
+    <meta property="og:image" content="tkico.jpg">
+    <!-- Replace with the live GitHub Pages URL once published -->
+    <meta property="og:url" content="">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Toolkit">
+    <meta name="twitter:description" content="A shelf of small web-based tools made because doing things manually got old. No ads, ever. Currently featuring Chartsmith, a chart generator.">
+    <meta name="twitter:image" content="tkico.jpg">
+
+    <link rel="icon" type="image/jpeg" href="tkico.jpg">
+    <link rel="apple-touch-icon" href="tkico.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #eceff0;
+            --dot: rgba(27, 36, 48, 0.10);
+            --surface: #ffffff;
+            --ink: #1b2430;
+            --ink-soft: #5b6472;
+            --line: #d7dcdd;
+            --accent: #1f6f63;
+            --accent-soft: #dcece7;
+            --brass: #b3813f;
+            --radius: 14px;
+        }
+
+        html[data-theme="dark"] {
+            --bg: #12161c;
+            --dot: rgba(236, 239, 240, 0.07);
+            --surface: #1a2029;
+            --ink: #eceff0;
+            --ink-soft: #97a0ac;
+            --line: #2a323d;
+            --accent: #45b09c;
+            --accent-soft: #1d332f;
+            --brass: #d1a465;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+            background-size: 22px 22px;
+            color: var(--ink);
+            min-height: 100vh;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .header-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 34px 24px 28px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .header-text .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 0.02em;
+        }
+
+        header h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-top: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        header p {
+            color: var(--ink-soft);
+            margin-top: 6px;
+            font-size: 15px;
+            max-width: 46ch;
+        }
+
+        .theme-toggle {
+            flex: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .theme-toggle .icon-moon { display: none; }
+        html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+        html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 32px 24px 60px;
+        }
+
+        .search-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 0 14px;
+            margin-bottom: 36px;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .search-row svg {
+            flex: none;
+            color: var(--ink-soft);
+        }
+
+        .search {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 13px 0;
+            font-family: inherit;
+            font-size: 15px;
+            background: transparent;
+            color: var(--ink);
+        }
+
+        .search::placeholder {
+            color: var(--ink-soft);
+        }
+
+        .category {
+            margin-bottom: 20px;
+        }
+
+        .category-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .category-head h2 {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .category-head .count {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--ink-soft);
+        }
+
+        .category-head .rule {
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+
+        .tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .tool {
+            position: relative;
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+        }
+
+        .tool:hover,
+        .tool:focus-visible {
+            transform: translateY(-4px) scale(1.035);
+            border-color: var(--accent);
+            box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.35);
+            z-index: 2;
+        }
+
+        .tool-preview {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(155deg, var(--accent-soft), var(--surface) 65%);
+            transition: background 0.25s ease;
+        }
+
+        .tool-preview::before,
+        .tool-preview::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(31, 111, 99, 0.35);
+        }
+
+        .tool-preview::before {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tool-preview::after {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .tool-icon-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.25s ease, background-color 0.25s ease;
+            overflow: hidden;
+        }
+
+        .tool:hover .tool-icon-wrap {
+            transform: scale(1.12);
+        }
+
+        .tool-favicon {
+            width: 30px;
+            height: 30px;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .tool-fallback {
+            display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            font-size: 18px;
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .tool-body {
+            padding: 16px 18px 18px;
+        }
+
+        .tool-body h3 {
+            font-size: 15.5px;
+            font-weight: 600;
+        }
+
+        .tool-desc {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-soft);
+            line-height: 1.45;
+            margin-top: 6px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+        }
+
+        .tool:hover .tool-desc,
+        .tool:focus-visible .tool-desc {
+            max-height: 60px;
+            opacity: 1;
+            margin-top: 8px;
+        }
+
+        .tool-open {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11.5px;
+            color: var(--accent);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .tool:hover .tool-open,
+        .tool:focus-visible .tool-open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 26px;
+            color: var(--ink-soft);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        footer .footer-tag {
+            display: block;
+            margin-top: 6px;
+            font-style: italic;
+            opacity: 0.75;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tool, .tool-icon-wrap, .tool-desc, .tool-open, body, header {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="header-text">
+                <div class="eyebrow">Built out of pure laziness</div>
+                <h1>Toolkit</h1>
+                <p>Small programs made because doing things manually got old. No ads, no subscriptions — just tools.</p>
+            </div>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"></line><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"></line><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"></line></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <div class="search-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search" class="search" placeholder="Search tools...">
+        </div>
+
+        <section class="category">
+            <div class="category-head">
+                <h2>Your tools</h2>
+                <span class="rule"></span>
+                <span class="count" id="tool-count">2</span>
+            </div>
+
+            <div class="tools">
+
+                <!--
+                  TEMPLATE — copy one of these <a class="tool"> blocks to add a new tool.
+                  1. Change href to the tool's real page.
+                  2. Change the h3 title and the tool-desc text.
+                  3. Change the single fallback letter (used only if the favicon can't load).
+                  The favicon preview is fetched automatically from the href — no image to upload.
+                -->
+
+                <a class="tool" href="tools/chartsmith.html">
+                    <div class="tool-preview">
+                        <div class="tool-icon-wrap">
+                            <img class="tool-favicon" alt="" loading="lazy">
+                            <div class="tool-fallback">C</div>
+                        </div>
+                    </div>
+                    <div class="tool-body">
+                        <h3>Chartsmith</h3>
+                        <span class="tool-desc">Build and style custom charts from your data.</span>
+                        <span class="tool-open">Open tool</span>
+                    </div>
+                </a>
+
+                <a class="tool" href="tools/timeline-builder.html">
+                    <div class="tool-preview">
+                        <div class="tool-icon-wrap">
+                            <img class="tool-favicon" alt="" loading="lazy">
+                            <div class="tool-fallback">T</div>
+                        </div>
+                    </div>
+                    <div class="tool-body">
+                        <h3>Timeline Builder</h3>
+                        <span class="tool-desc">Lay out project timelines and milestones.</span>
+                        <span class="tool-open">Open tool</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        Toolkit &copy; 2026 &middot; MIT Licensed &middot; No ads, ever.
+        <span class="footer-tag">Made because doing it manually was getting annoying.</span>
+    </footer>
+
+    <script>
+        // Theme: restore saved preference, or fall back to system setting.
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var initial = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (initial === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+            document.getElementById('theme-toggle').addEventListener('click', function () {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+                try { localStorage.setItem('theme', isDark ? 'light' : 'dark'); } catch (e) {}
+            });
+        })();
+
+        // Fetch each tool's favicon as its preview image, with a letter fallback on failure
+        // (also guards against sandboxed/srcdoc previews where there's no valid base URL to resolve against).
+        document.querySelectorAll('.tool').forEach(function (tool) {
+            var img = tool.querySelector('.tool-favicon');
+            var fallback = tool.querySelector('.tool-fallback');
+            var href = tool.getAttribute('href');
+            var absoluteUrl = null;
+
+            try {
+                absoluteUrl = new URL(href, document.baseURI).href;
+            } catch (e) {
+                try { absoluteUrl = new URL(href).href; } catch (e2) { absoluteUrl = null; }
+            }
+
+            if (absoluteUrl) {
+                img.src = 'https://www.google.com/s2/favicons?sz=128&domain_url=' + encodeURIComponent(absoluteUrl);
+                img.addEventListener('error', function () {
+                    img.style.display = 'none';
+                    fallback.style.display = 'flex';
+                });
+            } else {
+                img.style.display = 'none';
+                fallback.style.display = 'flex';
+            }
+        });
+
+        // Live search across tool name + description.
+        var search = document.getElementById('search');
+        var tools = document.querySelectorAll('.tool');
+        var count = document.getElementById('tool-count');
+
+        search.addEventListener('input', function () {
+            var query = this.value.toLowerCase();
+            var visible = 0;
+
+            tools.forEach(function (tool) {
+                var text = tool.innerText.toLowerCase();
+                var match = text.includes(query);
+                tool.style.display = match ? 'block' : 'none';
+                if (match) visible++;
+            });
+
+            count.textContent = visible;
+        });
+    </script>
+
+</body>
+</html>
