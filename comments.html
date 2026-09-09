@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments — Toolkit</title>
+    <meta name="description" content="Leave a comment on Toolkit.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Toolkit">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Comments — Toolkit">
+    <meta property="og:description" content="Leave a comment on Toolkit.">
+    <meta property="og:image" content="ico/tkico.jpg">
+
+    <link rel="icon" type="image/jpeg" href="ico/tkico.jpg">
+    <link rel="apple-touch-icon" href="ico/tkico.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f4f4f4;
+            --surface: #ffffff;
+            --ink: #161616;
+            --ink-soft: #525252;
+            --accent: #0f62fe;
+            --accent-ink: #ffffff;
+            --line: #e0e0e0;
+            --danger: #da1e28;
+        }
+
+        html[data-theme="dark"] {
+            --bg: #161616;
+            --surface: #262626;
+            --ink: #f4f4f4;
+            --ink-soft: #c6c6c6;
+            --accent: #4589ff;
+            --accent-ink: #161616;
+            --line: #393939;
+            --danger: #ff8389;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            margin: 0;
+            min-height: 100vh;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        a { color: inherit; }
+
+        /* ---- header (shared with index / about) ---- */
+        .site-header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .brand .wordmark {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            font-size: 14px;
+        }
+
+        .site-nav a {
+            text-decoration: none;
+            color: var(--ink-soft);
+        }
+
+        .site-nav a.current { color: var(--ink); }
+
+        .site-nav a:hover { color: var(--ink); }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .theme-toggle:hover { color: var(--ink); }
+
+        /* ---- account row ---- */
+        .account-row {
+            max-width: 720px;
+            margin: 18px auto 0;
+            padding: 0 24px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+        }
+
+        .account-row button {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .account-row button:hover { color: var(--ink); }
+        .account-row button.primary { color: var(--accent); }
+        .account-row .username { color: var(--ink); font-weight: 500; }
+
+        /* ---- content ---- */
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 16px 24px 60px;
+        }
+
+        main h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 24px 0 12px;
+        }
+
+        main > p.lede {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin: 0 0 8px;
+            max-width: 62ch;
+        }
+
+        /* ---- auth modal ---- */
+        .auth-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center; justify-content: center;
+            z-index: 50;
+        }
+        .auth-overlay.open { display: flex; }
+
+        .auth-modal {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            padding: 28px;
+            width: 320px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--line);
+        }
+        .auth-tabs button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px 0;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        .auth-tabs button.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+        .auth-modal input {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 14px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .auth-modal input:focus { outline: none; border-color: var(--accent); }
+
+        .auth-error { color: var(--danger); font-size: 12px; min-height: 1em; margin: 0 0 8px; }
+
+        /* ---- buttons (shared) ---- */
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--accent-ink);
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .btn:hover { opacity: 0.88; }
+        .btn:disabled { opacity: 0.55; cursor: default; }
+        .btn.full { width: 100%; }
+
+        /* ---- compose / gate ---- */
+        .compose-card { margin: 24px 0 28px; }
+        .compose-card textarea {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 14px;
+            padding: 12px;
+            min-height: 90px;
+            resize: vertical;
+        }
+        .compose-card textarea:focus { outline: none; border-color: var(--accent); }
+        .compose-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .char-hint { font-size: 12px; color: var(--ink-soft); }
+
+        .gate-card {
+            border: 1px solid var(--line);
+            padding: 22px;
+            text-align: center;
+            margin: 24px 0 28px;
+        }
+        .gate-card p { margin: 0 0 14px; color: var(--ink-soft); font-size: 14px; }
+
+        /* ---- controls ---- */
+        .comment-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0 6px;
+        }
+        .comment-count { font-size: 13px; color: var(--ink-soft); }
+        .sort-group { display: flex; gap: 4px; }
+        .sort-btn {
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--ink-soft);
+            font-family: inherit;
+            font-size: 12px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        .sort-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+        /* ---- comment list ---- */
+        .comment-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-top: 1px solid var(--line);
+        }
+        .comment-item:last-child { border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+
+        .vote-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex: none;
+            width: 28px;
+            padding-top: 2px;
+        }
+        .vote-btn {
+            background: none;
+            border: none;
+            font-size: 13px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            padding: 3px;
+            line-height: 1;
+            font-family: inherit;
+        }
+        .vote-btn:hover { color: var(--ink); }
+        .vote-btn.active { color: var(--accent); }
+        .vote-score { font-weight: 600; font-size: 13px; margin: 2px 0; font-variant-numeric: tabular-nums; }
+
+        .comment-body { flex: 1; min-width: 0; }
+        .comment-text { font-size: 15px; line-height: 1.6; margin: 0 0 8px; white-space: pre-wrap; color: var(--ink); }
+        .comment-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 12px;
+            color: var(--ink-soft);
+            flex-wrap: wrap;
+        }
+        .comment-meta .comment-author { color: var(--ink); font-weight: 500; }
+        .reply-toggle {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .replies-panel { display: none; margin-top: 14px; padding-left: 16px; border-left: 2px solid var(--line); }
+        .replies-panel.open { display: block; }
+        .reply-item { margin-bottom: 12px; }
+        .reply-item:last-child { margin-bottom: 0; }
+        .reply-meta { font-size: 11px; color: var(--ink-soft); margin-bottom: 2px; }
+        .reply-meta .reply-author { color: var(--ink); font-weight: 500; }
+        .reply-text { font-size: 14px; line-height: 1.55; margin: 0; color: var(--ink); }
+
+        .reply-compose { display: flex; gap: 8px; margin-top: 10px; }
+        .reply-compose input {
+            flex: 1;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+        .reply-compose input:focus { outline: none; border-color: var(--accent); }
+        .reply-send {
+            background: var(--accent);
+            color: var(--accent-ink);
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+        .reply-send:hover { opacity: 0.88; }
+
+        .reply-gate { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
+        .reply-gate button { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 12px; padding: 0; font-family: inherit; }
+
+        .comment-empty { text-align: center; padding: 48px 16px; color: var(--ink-soft); }
+        .comment-empty-icon { font-size: 28px; margin-bottom: 10px; }
+        .loading-text { text-align: center; padding: 32px; color: var(--ink-soft); font-size: 13px; }
+
+        /* ---- toast ---- */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: var(--ink); color: var(--bg);
+            padding: 10px 18px;
+            font-size: 13px; opacity: 0; pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ---- footer ---- */
+        footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            font-size: 13px;
+            color: var(--ink-soft);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="ico/tkico.jpg" alt="">
+            <span class="wordmark">Toolkit</span>
+        </a>
+        <nav class="site-nav">
+            <a href="about.html">About</a>
+            <a href="manual.pdf" target="_blank" rel="noopener">Manual</a>
+            <a href="comments.html" class="current">Comments</a>
+            <button class="theme-toggle" id="theme-toggle" type="button">Dark mode</button>
+        </nav>
+    </header>
+
+    <div class="account-row">
+        <div id="authBarGuest">
+            <button onclick="openAuthModal('login')">Log in</button>
+            &nbsp;&middot;&nbsp;
+            <button class="primary" onclick="openAuthModal('register')">Register</button>
+        </div>
+        <div id="authBarUser" style="display:none;">
+            <span class="username" id="authBarName"></span>
+            &nbsp;&middot;&nbsp;
+            <button onclick="signOut()">Log out</button>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="authOverlay" class="auth-overlay" onclick="closeAuthModal(event)">
+        <div class="auth-modal">
+            <div class="auth-tabs">
+                <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Log in</button>
+                <button id="tabRegister" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <div id="authPanelLogin">
+                <input type="email" id="loginEmail" placeholder="Email" />
+                <input type="password" id="loginPassword" placeholder="Password" />
+                <p id="loginError" class="auth-error"></p>
+                <button id="loginBtn" class="btn full" onclick="doLogin()">Sign in</button>
+            </div>
+
+            <div id="authPanelRegister" style="display:none;">
+                <input type="text" id="regUsername" placeholder="Display name" />
+                <input type="email" id="regEmail" placeholder="Email" />
+                <input type="password" id="regPassword" placeholder="Password (min 6 chars)" />
+                <p id="regError" class="auth-error"></p>
+                <button id="regBtn" class="btn full" onclick="doRegister()">Create account</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <h1>Comments</h1>
+        <p class="lede">Thoughts, bug reports, requests — whatever. Sign in to join in.</p>
+
+        <!-- Compose (shown when logged in) -->
+        <section id="commentCompose" class="compose-card" style="display:none;">
+            <textarea id="postBody" placeholder="Write a comment…" maxlength="1800"></textarea>
+            <div class="compose-footer">
+                <span id="charCount" class="char-hint">0 / 1800</span>
+                <button id="submitPostBtn" class="btn" onclick="submitPost()">Comment</button>
+            </div>
+        </section>
+
+        <!-- Gate (shown when logged out) -->
+        <section id="commentGate" class="gate-card">
+            <p>Sign in to leave a comment.</p>
+            <button class="btn" onclick="openAuthModal('login')">Log in / Register</button>
+        </section>
+
+        <div class="comment-controls">
+            <p id="commentCountLabel" class="comment-count">0 comments</p>
+            <div class="sort-group">
+                <button class="sort-btn active" onclick="setSort('new', this)">New</button>
+                <button class="sort-btn" onclick="setSort('top', this)">Top</button>
+            </div>
+        </div>
+
+        <div id="commentList"><div class="loading-text">Loading…</div></div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <footer>
+        Toolkit &copy; 2026 &middot; MIT Licensed
+    </footer>
+
+    <script>
+        // Theme toggle — mirrors index.html / about.html so the choice is shared via localStorage.
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var initial = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            var btn = document.getElementById('theme-toggle');
+
+            function updateLabel() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                btn.textContent = isDark ? 'Light mode' : 'Dark mode';
+            }
+
+            if (initial === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            updateLabel();
+
+            btn.addEventListener('click', function () {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+                try { localStorage.setItem('theme', isDark ? 'light' : 'dark'); } catch (e) {}
+                updateLabel();
+            });
+        })();
+    </script>
+
+    <!-- Firebase compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="comments.js"></script>
+</body>
+</html>
