@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERD Studio</title>
+<meta name="description" content="ERD Studio — a lightweight, in-browser entity-relationship diagram editor for designing and connecting database tables visually.">
+<meta name="author" content="ERD Studio">
+<meta name="theme-color" content="#3B6EF0">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="ERD Studio">
+<meta property="og:description" content="Design and connect database tables visually with an in-browser ER diagram editor.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ERD Studio">
+<meta name="twitter:description" content="Design and connect database tables visually with an in-browser ER diagram editor.">
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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">
+<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;base64,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">
+<style>
+:root{
+  --bg:#EDEFF3;
+  --panel:#FFFFFF;
+  --panel-border:#D8DCE3;
+  --canvas-bg:#E4E8EF;
+  --grid-line:#C9D0DC;
+  --grid-line-strong:#B7C0CF;
+  --ink:#1F2A44;
+  --ink-soft:#5B6472;
+  --accent:#3B6EF0;
+  --accent-soft:#DCE6FF;
+  --warn:#B8791C;
+  --danger:#C1443F;
+  --danger-soft:#FBE4E3;
+  --table-header:#2E3A59;
+  --table-header-text:#F3F5F9;
+  --dot:#8891A0;
+  --font-ui: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-mono: ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --radius:10px;
+  --shadow: 0 1px 2px rgba(31,42,68,.06), 0 6px 16px rgba(31,42,68,.08);
+}
+html[data-theme="dark"]{
+  --bg:#161A22;
+  --panel:#1D222C;
+  --panel-border:#2B313D;
+  --canvas-bg:#12151C;
+  --grid-line:#232A36;
+  --grid-line-strong:#2E3644;
+  --ink:#E7EAF0;
+  --ink-soft:#9AA3B2;
+  --accent:#6C9BFF;
+  --accent-soft:#243258;
+  --warn:#E0A94E;
+  --danger:#E1726D;
+  --danger-soft:#3A2426;
+  --table-header:#26304A;
+  --table-header-text:#EDEFF3;
+  --dot:#6C7686;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- Top bar ---------- */
+#topbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  background:var(--panel);
+  border-bottom:1px solid var(--panel-border);
+  flex-wrap:wrap;
+  z-index:5;
+}
+#diagramTitle{
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  background:transparent;
+  color:var(--ink);
+  padding:4px 6px;
+  border-radius:6px;
+  min-width:80px;
+  max-width:220px;
+}
+#diagramTitle:focus{outline:2px solid var(--accent-soft); background:var(--accent-soft);}
+.divider{width:1px;align-self:stretch;background:var(--panel-border);margin:2px 4px;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--panel-border);
+  background:var(--panel);
+  color:var(--ink);
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12.5px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .12s, border-color .12s;
+  white-space:nowrap;
+}
+.btn:hover{background:var(--accent-soft);border-color:var(--accent);}
+.btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.danger:hover{background:var(--danger-soft);border-color:var(--danger);color:var(--danger);}
+.btn.icon{padding:6px 8px;}
+select.mini{
+  border:1px solid var(--panel-border);
+  background:var(--panel);
+  color:var(--ink);
+  border-radius:8px;
+  padding:5px 6px;
+  font-size:12.5px;
+  font-family:inherit;
+}
+#spacer{flex:1;}
+.zoomgroup{display:flex;align-items:center;gap:2px;border:1px solid var(--panel-border);border-radius:8px;overflow:hidden;}
+.zoomgroup .btn{border:none;border-radius:0;}
+#zoomLabel{font-size:12px;color:var(--ink-soft);min-width:42px;text-align:center;cursor:pointer;}
+#zoomLabel:hover{color:var(--accent);}
+#btnHelp{margin-left:6px;}
+#shortcutsPop{
+  position:absolute;bottom:44px;right:12px;background:var(--panel);border:1px solid var(--panel-border);
+  border-radius:10px;box-shadow:var(--shadow);padding:12px 14px;font-size:12px;color:var(--ink-soft);
+  line-height:1.9;z-index:30;min-width:220px;
+}
+#shortcutsPop b{color:var(--ink);}
+#shortcutsPop .row{display:flex;justify-content:space-between;gap:14px;}
+#canvasHint{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  background:var(--panel);border:1px solid var(--panel-border);box-shadow:var(--shadow);
+  padding:6px 12px;border-radius:20px;font-size:12px;color:var(--ink-soft);
+  pointer-events:none;opacity:0;transition:opacity .15s;z-index:20;white-space:nowrap;
+}
+#canvasHint.show{opacity:1;}
+
+/* ---------- Main layout ---------- */
+#main{flex:1;display:flex;min-height:0;position:relative;}
+#canvasWrapper{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  background:var(--canvas-bg);
+  cursor:grab;
+}
+#canvasWrapper.panning{cursor:grabbing;}
+#canvasWrapper.connecting{cursor:crosshair;}
+#world{
+  position:absolute;
+  top:0;left:0;
+  width:6000px;height:4000px;
+  transform-origin:0 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+  background-size:20px 20px,20px 20px,100px 100px,100px 100px;
+}
+#world.dots-bg{
+  background-image: radial-gradient(var(--grid-line-strong) 1.3px, transparent 1.3px);
+  background-size:22px 22px;
+}
+#world.plain-bg{background-image:none;}
+svg#relLayer{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;}
+svg#relLayer path.hit{pointer-events:stroke;cursor:pointer;}
+svg#relLayer path.rel-label-bg{pointer-events:none;}
+#tablesLayer{position:absolute;top:0;left:0;}
+
+/* ---------- Table node ---------- */
+.tbl{
+  position:absolute;
+  min-width:170px;
+  background:var(--panel);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1.5px solid transparent;
+  overflow:visible;
+  user-select:none;
+}
+.tbl.selected{border-color:var(--accent);}
+.tbl-head{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 10px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  font-weight:700;
+  font-size:13.5px;
+  cursor:grab;
+  color:var(--table-header-text);
+}
+.tbl-head:active{cursor:grabbing;}
+.tbl-head input{
+  background:transparent;border:none;color:inherit;font:inherit;font-weight:700;
+  width:100%;outline:none;border-radius:4px;padding:1px 3px;
+}
+.tbl-head input:focus{background:rgba(255,255,255,.18);}
+.tbl-body{padding:2px 0;}
+.field-row{
+  position:relative;
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;
+  font-size:12px;
+  border-top:1px solid var(--panel-border);
+}
+.field-row:first-child{border-top:none;}
+.field-row:hover{background:var(--accent-soft);}
+.flags{display:flex;gap:2px;flex:0 0 auto;}
+.flag{
+  font-size:8.5px;font-weight:700;font-family:var(--font-mono);
+  color:var(--ink-soft);border:1px solid var(--panel-border);
+  border-radius:4px;padding:1px 3px;cursor:pointer;line-height:1.3;
+  background:var(--panel);
+}
+.flag.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+.flag.on.pk{background:var(--warn);border-color:var(--warn);}
+.flag.on.fk{background:#6C63B5;border-color:#6C63B5;}
+.fname{
+  flex:1 1 auto;min-width:30px;background:transparent;border:none;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;outline:none;padding:1px 2px;border-radius:3px;
+}
+.fname:focus{background:var(--panel);box-shadow:0 0 0 1.5px var(--accent);}
+.ftype{
+  flex:0 0 auto;width:92px;background:transparent;border:none;color:var(--ink-soft);
+  font-family:var(--font-mono);font-size:11px;outline:none;padding:1px 2px;border-radius:3px;text-align:right;
+}
+.ftype:focus{background:var(--panel);box-shadow:0 0 0 1.5px var(--accent);color:var(--ink);text-align:left;}
+.fdel{
+  flex:0 0 auto;border:none;background:transparent;color:var(--ink-soft);cursor:pointer;
+  font-size:14px;line-height:1;padding:0 2px;opacity:0;
+}
+.field-row:hover .fdel{opacity:1;}
+.fdel:hover{color:var(--danger);}
+.addfield{
+  display:block;width:100%;text-align:left;padding:6px 10px;border:none;background:transparent;
+  color:var(--accent);font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;
+}
+.addfield:hover{background:var(--accent-soft);}
+.dot{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--panel);border:2px solid var(--dot);
+  cursor:crosshair;
+}
+.dot.left{left:-6px;}
+.dot.right{right:-6px;}
+.dot:hover{border-color:var(--accent);background:var(--accent);}
+.dot.connect-active{animation:dotPulse 1.4s ease-in-out infinite;}
+@keyframes dotPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(59,110,240,.35);}
+  50%{box-shadow:0 0 0 5px rgba(59,110,240,0);}
+}
+.dot.drop-target{
+  background:var(--accent);border-color:var(--accent);
+  transform:translateY(-50%) scale(1.5);
+  box-shadow:0 0 0 4px var(--accent-soft);
+}
+.dot.drop-reject{
+  border-color:var(--danger);background:var(--danger);opacity:.6;
+  transform:translateY(-50%) scale(1.2);
+}
+.tbl-resize{
+  position:absolute;right:-4px;top:0;bottom:0;width:8px;cursor:ew-resize;
+}
+.tbl-resize.resize-disabled{cursor:default;pointer-events:none;}
+
+/* ---------- Inspector ---------- */
+#inspector{
+  width:280px;flex:0 0 auto;background:var(--panel);border-left:1px solid var(--panel-border);
+  overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px;
+}
+#inspector h3{margin:0 0 2px;font-size:12px;text-transform:none;letter-spacing:.2px;color:var(--ink-soft);font-weight:700;}
+#inspector .empty-hint{color:var(--ink-soft);font-size:13px;line-height:1.5;margin-top:8px;}
+.field-group{display:flex;flex-direction:column;gap:6px;}
+.field-group label{font-size:11px;color:var(--ink-soft);font-weight:600;}
+.field-group input[type=text], .field-group select, .field-group textarea{
+  border:1px solid var(--panel-border);background:var(--bg);color:var(--ink);
+  border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;width:100%;
+}
+.swatches{display:flex;flex-wrap:wrap;gap:6px;}
+.swatch{
+  width:24px;height:24px;border-radius:7px;cursor:pointer;border:2px solid transparent;
+}
+.swatch.active{border-color:var(--ink);}
+.rel-summary{
+  font-family:var(--font-mono);font-size:11.5px;background:var(--bg);
+  border:1px solid var(--panel-border);border-radius:8px;padding:8px;line-height:1.6;
+}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+hr.sep{border:none;border-top:1px solid var(--panel-border);margin:2px 0;}
+
+/* ---------- Misc ---------- */
+.hidden{display:none !important;}
+#toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:20px;
+  font-size:12.5px;opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;
+  z-index:50;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+kbd{font-family:var(--font-mono);background:var(--bg);border:1px solid var(--panel-border);border-radius:4px;padding:0 4px;font-size:10.5px;}
+#fileInput{display:none;}
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-thumb{background:var(--panel-border);border-radius:6px;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <input id="diagramTitle" value="Untitled ERD" spellcheck="false">
+  <div class="divider"></div>
+  <button class="btn primary" id="btnAddTable">+ Table</button>
+  <button class="btn" id="btnConnect">🔗 Connect</button>
+  <div class="divider"></div>
+  <select class="mini" id="selLineStyle" title="Connector line style">
+    <option value="curved">Curved lines</option>
+    <option value="straight">Straight lines</option>
+    <option value="ortho">Orthogonal lines</option>
+  </select>
+  <select class="mini" id="selGrid" title="Canvas background">
+    <option value="grid">Grid background</option>
+    <option value="dots">Dot background</option>
+    <option value="plain">Plain background</option>
+  </select>
+  <button class="btn icon" id="btnTheme" title="Toggle theme">☾</button>
+  <div class="divider"></div>
+  <button class="btn" id="btnExportJson">Export JSON</button>
+  <button class="btn" id="btnExportSvg">Export SVG</button>
+  <button class="btn" id="btnExportPng">Export PNG</button>
+  <button class="btn" id="btnImport">Import</button>
+  <input type="file" id="fileInput" accept="application/json">
+  <div class="divider"></div>
+  <button class="btn danger" id="btnClear">New</button>
+  <div id="spacer"></div>
+  <div class="zoomgroup">
+    <button class="btn icon" id="zoomOut">−</button>
+    <span id="zoomLabel">100%</span>
+    <button class="btn icon" id="zoomIn">+</button>
+    <button class="btn" id="zoomFit">Fit</button>
+  </div>
+  <button class="btn icon" id="btnHelp" title="Canvas controls">?</button>
+</div>
+
+<div id="main">
+  <div id="canvasWrapper">
+    <div id="world">
+      <svg id="relLayer" width="6000" height="4000"></svg>
+      <div id="tablesLayer"></div>
+    </div>
+    <div id="canvasHint"></div>
+  </div>
+  <div id="inspector"></div>
+</div>
+<div id="shortcutsPop" class="hidden">
+  <div class="row"><span>Pan</span><b>Scroll / Space+drag / Middle-click</b></div>
+  <div class="row"><span>Zoom</span><b>Ctrl/⌘ + scroll / pinch</b></div>
+  <div class="row"><span>Zoom in / out</span><b>+ / −</b></div>
+  <div class="row"><span>Reset zoom</span><b>0</b></div>
+  <div class="row"><span>Fit to screen</span><b>Shift+F</b></div>
+  <div class="row"><span>Cancel connect</span><b>Esc</b></div>
+  <div class="row"><span>Delete selected</span><b>Delete</b></div>
+</div>
+
+<div id="toast"></div>
+<datalist id="typeList"></datalist>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ Config ============ */
+const ROW_H = 27, HEAD_H = 34, DOT_R = 5;
+const PALETTE = ['#2E3A59','#3F6C51','#7A4B3A','#5B4B7A','#8A6A2F','#2F6E6E','#7A3F55','#4A4F58'];
+const TYPES = ['INT','BIGINT','SMALLINT','SERIAL','VARCHAR(255)','TEXT','CHAR(1)','BOOLEAN',
+  'DATE','DATETIME','TIMESTAMP','FLOAT','DOUBLE','DECIMAL(10,2)','UUID','JSON','ENUM','BLOB'];
+const CARD_OPTS = [
+  {v:'one', label:'One (—|)'},
+  {v:'many', label:'Many (—<)'},
+  {v:'one-only', label:'One and only one (—||)'},
+  {v:'zero-one', label:'Zero or one (—o|)'},
+  {v:'one-many', label:'One or many (—|<)'},
+  {v:'zero-many', label:'Zero or many (—o<)'}
+];
+
+let uidCounter = 1;
+function uid(prefix){ return prefix + (uidCounter++); }
+
+/* ============ State ============ */
+let state = null;
+
+function freshState(){
+  return {
+    settings:{ lineStyle:'curved', grid:'grid', theme:'light' },
+    tables:[],
+    relationships:[],
+    selection:null // {type:'table'|'rel', id}
+  };
+}
+
+function sampleState(){
+  const s = freshState();
+  const users = { id: uid('t'), name:'users', x:120, y:100, width:220, color:PALETTE[0],
+    fields:[
+      {id:uid('f'), name:'id', type:'UUID', pk:true, fk:false, nn:true, uq:false},
+      {id:uid('f'), name:'email', type:'VARCHAR(255)', pk:false, fk:false, nn:true, uq:true},
+      {id:uid('f'), name:'name', type:'VARCHAR(255)', pk:false, fk:false, nn:false, uq:false},
+      {id:uid('f'), name:'created_at', type:'TIMESTAMP', pk:false, fk:false, nn:true, uq:false},
+    ]};
+  const posts = { id: uid('t'), name:'posts', x:520, y:80, width:220, color:PALETTE[5],
+    fields:[
+      {id:uid('f'), name:'id', type:'UUID', pk:true, fk:false, nn:true, uq:false},
+      {id:uid('f'), name:'user_id', type:'UUID', pk:false, fk:true, nn:true, uq:false},
+      {id:uid('f'), name:'title', type:'VARCHAR(255)', pk:false, fk:false, nn:true, uq:false},
+      {id:uid('f'), name:'body', type:'TEXT', pk:false, fk:false, nn:false, uq:false},
+    ]};
+  const comments = { id: uid('t'), name:'comments', x:520, y:380, width:220, color:PALETTE[4],
+    fields:[
+      {id:uid('f'), name:'id', type:'UUID', pk:true, fk:false, nn:true, uq:false},
+      {id:uid('f'), name:'post_id', type:'UUID', pk:false, fk:true, nn:true, uq:false},
+      {id:uid('f'), name:'user_id', type:'UUID', pk:false, fk:true, nn:true, uq:false},
+      {id:uid('f'), name:'body', type:'TEXT', pk:false, fk:false, nn:true, uq:false},
+    ]};
+  s.tables.push(users, posts, comments);
+  s.relationships.push(
+    {id:uid('r'), fromTable:users.id, fromField:users.fields[0].id, toTable:posts.id, toField:posts.fields[1].id,
+     cardFrom:'one', cardTo:'many', label:''},
+    {id:uid('r'), fromTable:posts.id, fromField:posts.fields[0].id, toTable:comments.id, toField:comments.fields[1].id,
+     cardFrom:'one', cardTo:'many', label:''},
+    {id:uid('r'), fromTable:users.id, fromField:users.fields[0].id, toTable:comments.id, toField:comments.fields[2].id,
+     cardFrom:'one', cardTo:'many', label:''}
+  );
+  return s;
+}
+
+/* ============ DOM refs ============ */
+const wrapper = document.getElementById('canvasWrapper');
+const world = document.getElementById('world');
+const svg = document.getElementById('relLayer');
+const tablesLayer = document.getElementById('tablesLayer');
+const inspector = document.getElementById('inspector');
+const diagramTitle = document.getElementById('diagramTitle');
+const toastEl = document.getElementById('toast');
+
+let view = { x: 60, y: 40, scale: 1 };
+let connectMode = false;
+let pendingConnect = null; // {tableId, fieldId, side}
+let dragCtx = null; // active drag context
+
+/* ============ Utility ============ */
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>toastEl.classList.remove('show'), 1600);
+}
+function getTable(id){ return state.tables.find(t=>t.id===id); }
+function getField(table, id){ return table.fields.find(f=>f.id===id); }
+function tableHeight(t){ return HEAD_H + t.fields.length*ROW_H + 30; }
+function applyView(){
+  world.style.transform = `translate(${view.x}px,${view.y}px) scale(${view.scale})`;
+  document.getElementById('zoomLabel').textContent = Math.round(view.scale*100)+'%';
+}
+function screenToWorld(sx, sy){
+  const r = wrapper.getBoundingClientRect();
+  return { x:(sx - r.left - view.x)/view.scale, y:(sy - r.top - view.y)/view.scale };
+}
+
+/* ============ Rendering ============ */
+function fullRender(){
+  renderTables();
+  renderRelationships();
+  renderInspector();
+  applyGridStyle();
+}
+
+function applyGridStyle(){
+  world.classList.remove('dots-bg','plain-bg');
+  if(state.settings.grid==='dots') world.classList.add('dots-bg');
+  else if(state.settings.grid==='plain') world.classList.add('plain-bg');
+}
+
+function renderTables(){
+  tablesLayer.innerHTML = '';
+  state.tables.forEach(t => tablesLayer.appendChild(buildTableNode(t)));
+  if(connectMode) setDotsActive(true);
+}
+
+function fieldRowHtml(t, f){
+  return `
+  <div class="field-row" data-field-id="${f.id}">
+    <span class="dot left" data-table="${t.id}" data-field="${f.id}" data-side="left"></span>
+    <span class="flags">
+      <span class="flag ${f.pk?'on pk':''}" data-flag="pk" title="Primary key">PK</span>
+      <span class="flag ${f.fk?'on fk':''}" data-flag="fk" title="Foreign key">FK</span>
+      <span class="flag ${f.nn?'on':''}" data-flag="nn" title="Not null">NN</span>
+      <span class="flag ${f.uq?'on':''}" data-flag="uq" title="Unique">UQ</span>
+    </span>
+    <input class="fname" value="${escapeAttr(f.name)}" spellcheck="false">
+    <input class="ftype" value="${escapeAttr(f.type)}" list="typeList" spellcheck="false">
+    <button class="fdel" title="Delete field">×</button>
+    <span class="dot right" data-table="${t.id}" data-field="${f.id}" data-side="right"></span>
+  </div>`;
+}
+
+function buildTableNode(t){
+  const div = document.createElement('div');
+  div.className = 'tbl' + (state.selection && state.selection.type==='table' && state.selection.id===t.id ? ' selected':'');
+  div.style.left = t.x+'px'; div.style.top = t.y+'px'; div.style.width = t.width+'px';
+  div.dataset.tableId = t.id;
+  div.innerHTML = `
+    <div class="tbl-head" style="background:${t.color}">
+      <input value="${escapeAttr(t.name)}" spellcheck="false">
+    </div>
+    <div class="tbl-body">
+      ${t.fields.map(f=>fieldRowHtml(t,f)).join('')}
+      <button class="addfield">+ Add field</button>
+    </div>
+    <div class="tbl-resize"></div>
+  `;
+  attachTableEvents(div, t);
+  return div;
+}
+
+function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+/* ---------- Table interactivity ---------- */
+function attachTableEvents(div, t){
+  const head = div.querySelector('.tbl-head');
+  const nameInput = head.querySelector('input');
+
+  // select on mousedown (not drag)
+  let moved = false, startSX=0, startSY=0, startTX=0, startTY=0;
+
+  head.addEventListener('mousedown', e=>{
+    if(connectMode) return;
+    if(e.target.tagName==='INPUT') return;
+    e.stopPropagation();
+    moved = false;
+    startSX = e.clientX; startSY = e.clientY;
+    startTX = t.x; startTY = t.y;
+    dragCtx = {type:'table', id:t.id};
+    function onMove(ev){
+      const dx = (ev.clientX-startSX)/view.scale, dy=(ev.clientY-startSY)/view.scale;
+      if(Math.abs(dx)>2||Math.abs(dy)>2) moved = true;
+      t.x = Math.max(0, startTX+dx); t.y = Math.max(0, startTY+dy);
+      div.style.left = t.x+'px'; div.style.top = t.y+'px';
+      updateAllPaths();
+    }
+    function onUp(){
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      dragCtx = null;
+      if(!moved){ selectItem('table', t.id); }
+      persist();
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  nameInput.addEventListener('mousedown', e=>e.stopPropagation());
+  nameInput.addEventListener('blur', ()=>{ t.name = nameInput.value.trim()||t.name; renderInspector(); persist(); });
+  nameInput.addEventListener('keydown', e=>{ if(e.key==='Enter') nameInput.blur(); });
+
+  div.addEventListener('mousedown', e=>{ if(!connectMode) e.stopPropagation(); });
+
+  // field rows
+  div.querySelectorAll('.field-row').forEach(row=>{
+    const fid = row.dataset.fieldId;
+    const f = getField(t, fid);
+    const fname = row.querySelector('.fname');
+    const ftype = row.querySelector('.ftype');
+    fname.addEventListener('blur', ()=>{ f.name = fname.value.trim()||f.name; persist(); syncTableHeightOnly(t); });
+    ftype.addEventListener('blur', ()=>{ f.type = ftype.value.trim()||f.type; persist(); });
+    [fname,ftype].forEach(inp=>{
+      inp.addEventListener('keydown', e=>{ if(e.key==='Enter') inp.blur(); });
+      inp.addEventListener('mousedown', e=>e.stopPropagation());
+    });
+    row.querySelectorAll('.flag').forEach(chip=>{
+      chip.addEventListener('mousedown', e=>e.stopPropagation());
+      chip.addEventListener('click', ()=>{
+        const key = chip.dataset.flag;
+        f[key] = !f[key];
+        chip.classList.toggle('on');
+        persist();
+      });
+    });
+    row.querySelector('.fdel').addEventListener('mousedown', e=>e.stopPropagation());
+    row.querySelector('.fdel').addEventListener('click', ()=>{
+      t.fields = t.fields.filter(x=>x.id!==fid);
+      state.relationships = state.relationships.filter(r=> !(r.fromField===fid || r.toField===fid));
+      fullRender(); persist();
+    });
+    // connector dots
+    row.querySelectorAll('.dot').forEach(dot=>{
+      dot.addEventListener('mousedown', e=>{
+        e.stopPropagation(); e.preventDefault();
+        startConnectorDrag(t.id, fid, dot.dataset.side, e);
+      });
+    });
+  });
+
+  div.querySelector('.addfield').addEventListener('mousedown', e=>e.stopPropagation());
+  div.querySelector('.addfield').addEventListener('click', ()=>{
+    t.fields.push({id:uid('f'), name:'new_field', type:'VARCHAR(255)', pk:false, fk:false, nn:false, uq:false});
+    fullRender(); persist();
+  });
+
+  // resize handle
+  const resize = div.querySelector('.tbl-resize');
+  resize.addEventListener('mousedown', e=>{
+    if(connectMode) return; // don't let a resize drag start while wiring up relationships
+    e.stopPropagation(); e.preventDefault();
+    const startX = e.clientX, startW = t.width;
+    function onMove(ev){
+      t.width = Math.max(160, startW + (ev.clientX-startX)/view.scale);
+      div.style.width = t.width+'px';
+      updateAllPaths();
+    }
+    function onUp(){ document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); persist(); }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+  resize.classList.toggle('resize-disabled', connectMode);
+}
+
+function syncTableHeightOnly(){ /* heights are computed on demand; nothing to precompute */ }
+
+/* ---------- Connector dot geometry ---------- */
+function dotWorldPos(t, fieldId, side){
+  const idx = t.fields.findIndex(f=>f.id===fieldId);
+  const y = t.y + HEAD_H + idx*ROW_H + ROW_H/2;
+  const x = side==='left' ? t.x : t.x + t.width;
+  return {x,y};
+}
+
+/* ---------- Connections (create relationship) ---------- */
+let activeConnectCancel = null;
+const canvasHint = document.getElementById('canvasHint');
+function showCanvasHint(msg){ canvasHint.textContent = msg; canvasHint.classList.add('show'); }
+function hideCanvasHint(){ canvasHint.classList.remove('show'); }
+
+function setDotsActive(on){
+  document.querySelectorAll('.dot').forEach(d=>d.classList.toggle('connect-active', on));
+}
+
+function clearDropHighlights(){
+  document.querySelectorAll('.dot.drop-target, .dot.drop-reject').forEach(d=>d.classList.remove('drop-target','drop-reject'));
+}
+
+function startConnectorDrag(tableId, fieldId, side, e){
+  pendingConnect = {tableId, fieldId, side};
+  wrapper.classList.add('connecting');
+  document.querySelectorAll('.tbl-resize').forEach(r=>r.classList.add('resize-disabled'));
+  showCanvasHint('Drag to a field on another table, release to connect · Esc to cancel');
+  const tempPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  tempPath.setAttribute('stroke', 'var(--accent)');
+  tempPath.setAttribute('stroke-width','2');
+  tempPath.setAttribute('fill','none');
+  tempPath.setAttribute('stroke-dasharray','5,4');
+  svg.appendChild(tempPath);
+
+  let lastDot = null;
+  function onMove(ev){
+    const t = getTable(tableId);
+    const p1 = dotWorldPos(t, fieldId, side);
+    const p2 = screenToWorld(ev.clientX, ev.clientY);
+    tempPath.setAttribute('d', pathD(p1,p2,'straight'));
+
+    const hovered = document.elementFromPoint(ev.clientX, ev.clientY);
+    const dot = hovered && hovered.classList.contains('dot') ? hovered : null;
+    if(dot !== lastDot){
+      clearDropHighlights();
+      if(dot){
+        const sameField = dot.dataset.table===tableId && dot.dataset.field===fieldId;
+        dot.classList.add(sameField ? 'drop-reject' : 'drop-target');
+      }
+      lastDot = dot;
+    }
+  }
+  function cleanup(){
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    wrapper.classList.remove('connecting');
+    tempPath.remove();
+    clearDropHighlights();
+    hideCanvasHint();
+    pendingConnect = null;
+    activeConnectCancel = null;
+    if(!connectMode) document.querySelectorAll('.tbl-resize').forEach(r=>r.classList.remove('resize-disabled'));
+  }
+  function onUp(ev){
+    const target = document.elementFromPoint(ev.clientX, ev.clientY);
+    cleanup();
+    if(target && target.classList.contains('dot')){
+      const toTable = target.dataset.table, toField = target.dataset.field;
+      if(!(toTable===tableId && toField===fieldId)){
+        const rel = {
+          id:uid('r'), fromTable:tableId, fromField:fieldId, toTable, toField,
+          cardFrom:'one', cardTo:'many', label:''
+        };
+        state.relationships.push(rel);
+        fullRender(); persist();
+        selectItem('rel', rel.id);
+        toast('Relationship created');
+      }
+    }
+  }
+  activeConnectCancel = cleanup;
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+function cancelActiveConnect(){
+  if(activeConnectCancel) activeConnectCancel();
+}
+
+/* ---------- Relationship rendering ---------- */
+function pathD(p1, p2, style){
+  if(style==='straight') return `M${p1.x},${p1.y} L${p2.x},${p2.y}`;
+  if(style==='ortho'){
+    const midX = (p1.x+p2.x)/2;
+    return `M${p1.x},${p1.y} L${midX},${p1.y} L${midX},${p2.y} L${p2.x},${p2.y}`;
+  }
+  const dx = Math.max(Math.abs(p2.x-p1.x)*0.5, 40);
+  return `M${p1.x},${p1.y} C${p1.x+dx*Math.sign(p2.x-p1.x||1)},${p1.y} ${p2.x-dx*Math.sign(p2.x-p1.x||1)},${p2.y} ${p2.x},${p2.y}`;
+}
+
+const CROWFOOT = (color)=>`<line x1="0" y1="-7" x2="-16" y2="0" stroke="${color}" stroke-width="2"/>
+                <line x1="0" y1="0" x2="-16" y2="0" stroke="${color}" stroke-width="2"/>
+                <line x1="0" y1="7" x2="-16" y2="0" stroke="${color}" stroke-width="2"/>`;
+const TICK = (x,color)=>`<line x1="${x}" y1="-7" x2="${x}" y2="7" stroke="${color}" stroke-width="2"/>`;
+const CIRCLE = (cx,color)=>`<circle cx="${cx}" cy="0" r="6" fill="none" stroke="${color}" stroke-width="2"/>`;
+
+function glyphSvg(px, py, angleDeg, type, color){
+  let inner = '';
+  switch(type){
+    case 'one':
+      // One: a single tick across the line
+      inner = TICK(-13,color);
+      break;
+    case 'many':
+      // Many: crow's foot only
+      inner = CROWFOOT(color);
+      break;
+    case 'one-only':
+      // One and only one: double tick
+      inner = TICK(-16,color) + TICK(-10,color);
+      break;
+    case 'zero-one':
+      // Zero or one: circle + single tick
+      inner = CIRCLE(-24,color) + TICK(-12,color);
+      break;
+    case 'one-many':
+      // One or many: crow's foot + single tick further out
+      inner = CROWFOOT(color) + TICK(-22,color);
+      break;
+    case 'zero-many':
+      // Zero or many: circle + crow's foot
+      inner = CIRCLE(-26,color) + CROWFOOT(color);
+      break;
+  }
+  return `<g transform="translate(${px},${py}) rotate(${angleDeg})">${inner}</g>`;
+}
+
+function renderRelationships(){
+  // preserve defs-less simple render; rebuild svg content each call
+  let html = '';
+  const lineColorVar = getComputedStyle(document.documentElement).getPropertyValue('--ink-soft').trim() || '#5B6472';
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3B6EF0';
+
+  state.relationships.forEach(r=>{
+    const ft = getTable(r.fromTable), tt = getTable(r.toTable);
+    if(!ft || !tt) return;
+    const geo = computeRelGeometry(r, ft, tt, state.settings.lineStyle);
+    const isSel = state.selection && state.selection.type==='rel' && state.selection.id===r.id;
+    const color = isSel ? accent : lineColorVar;
+    const d = pathD(geo.p1, geo.p2, state.settings.lineStyle);
+    html += `<path class="hit rel-path" data-rel-id="${r.id}" d="${d}" stroke="transparent" stroke-width="14" fill="none"></path>`;
+    html += `<path data-rel-id="${r.id}" d="${d}" stroke="${color}" stroke-width="${isSel?2.5:1.75}" fill="none"></path>`;
+    html += glyphSvg(geo.p1.x, geo.p1.y, geo.angle1, r.cardFrom, color);
+    html += glyphSvg(geo.p2.x, geo.p2.y, geo.angle2, r.cardTo, color);
+    if(r.label){
+      const mx = (geo.p1.x+geo.p2.x)/2, my = (geo.p1.y+geo.p2.y)/2;
+      html += `<rect class="rel-label-bg" x="${mx-((r.label.length*3.6)+8)/2}" y="${my-9}" width="${(r.label.length*3.6)+8}" height="16" rx="4" fill="var(--panel)" opacity="0.9"></rect>`;
+      html += `<text x="${mx}" y="${my+3}" text-anchor="middle" font-size="10.5" font-family="${'var(--font-ui)'}" fill="${color}">${escapeXml(r.label)}</text>`;
+    }
+  });
+  svg.innerHTML = html;
+  svg.querySelectorAll('.hit').forEach(p=>{
+    p.addEventListener('mousedown', e=>{ e.stopPropagation(); selectItem('rel', p.dataset.relId); });
+  });
+}
+function escapeXml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function computeRelGeometry(r, ft, tt, style){
+  const fCenterX = ft.x + ft.width/2, tCenterX = tt.x + tt.width/2;
+  const sideFrom = fCenterX <= tCenterX ? 'right' : 'left';
+  const sideTo = fCenterX <= tCenterX ? 'left' : 'right';
+  const p1 = dotWorldPos(ft, r.fromField, sideFrom);
+  const p2 = dotWorldPos(tt, r.toField, sideTo);
+  let outward1, outward2;
+  if(style === 'straight'){
+    // Direct line: the outward direction really does follow its slope.
+    outward1 = Math.atan2(p2.y-p1.y, p2.x-p1.x) * 180/Math.PI;
+    outward2 = Math.atan2(p1.y-p2.y, p1.x-p2.x) * 180/Math.PI;
+  } else {
+    // Curved and orthogonal paths always leave/arrive at a dot horizontally
+    // (see pathD), so the outward direction is horizontal too, regardless of
+    // how steep the overall connection is.
+    outward1 = sideFrom === 'right' ? 0 : 180;
+    outward2 = sideTo === 'right' ? 0 : 180;
+  }
+  // glyphSvg draws each mark along local -x from the dot, which points back
+  // the way it came; add a half turn so marks sit out in the open canvas
+  // along the connector instead of hidden behind the table they attach to.
+  const angle1 = outward1 + 180;
+  const angle2 = outward2 + 180;
+  return {p1,p2,angle1,angle2};
+}
+
+function updateAllPaths(){ renderRelationships(); }
+
+/* ============ Selection & Inspector ============ */
+function selectItem(type, id){
+  state.selection = {type, id};
+  document.querySelectorAll('.tbl').forEach(d=>d.classList.toggle('selected', type==='table' && d.dataset.tableId===id));
+  renderRelationships();
+  renderInspector();
+}
+function clearSelection(){
+  state.selection = null;
+  document.querySelectorAll('.tbl.selected').forEach(d=>d.classList.remove('selected'));
+  renderRelationships();
+  renderInspector();
+}
+
+function renderInspector(){
+  inspector.innerHTML = '';
+  if(!state.selection){
+    inspector.innerHTML = `<h3>Nothing selected</h3><div class="empty-hint">
+      Click a table header or a connection line to edit it here.<br><br>
+      • Drag a field's dot to another field's dot to create a relationship.<br>
+      • Scroll to pan, <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+scroll or pinch to zoom.<br>
+      • Hold <kbd>Space</kbd> or middle-click to drag-pan anywhere.<br>
+      • Press <kbd>Delete</kbd> to remove the selected item, <kbd>Esc</kbd> to cancel a connection.<br>
+      • Click the <b>?</b> button for the full shortcut list.
+      </div>`;
+    return;
+  }
+  if(state.selection.type==='table'){
+    const t = getTable(state.selection.id);
+    if(!t){ clearSelection(); return; }
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <h3>Table</h3>
+      <div class="field-group">
+        <label>Name</label>
+        <input type="text" id="insTableName" value="${escapeAttr(t.name)}">
+      </div>
+      <div class="field-group">
+        <label>Header color</label>
+        <div class="swatches" id="insSwatches"></div>
+      </div>
+      <hr class="sep">
+      <button class="btn danger" id="insDeleteTable" style="align-self:flex-start;">Delete table</button>
+    `;
+    inspector.appendChild(wrap);
+    const nameInp = wrap.querySelector('#insTableName');
+    nameInp.addEventListener('input', ()=>{ t.name = nameInp.value; renderTables(); persist(); selectItem('table', t.id); });
+    const sw = wrap.querySelector('#insSwatches');
+    PALETTE.forEach(c=>{
+      const s = document.createElement('div');
+      s.className = 'swatch' + (t.color.toLowerCase()===c.toLowerCase() ? ' active':'');
+      s.style.background = c;
+      s.addEventListener('click', ()=>{ t.color=c; fullRender(); selectItem('table', t.id); persist(); });
+      sw.appendChild(s);
+    });
+    const customColor = document.createElement('input');
+    customColor.type = 'color'; customColor.value = t.color;
+    customColor.style.cssText = 'width:28px;height:28px;border:none;background:none;cursor:pointer;padding:0;';
+    customColor.addEventListener('input', ()=>{ t.color=customColor.value; fullRender(); selectItem('table', t.id); persist(); });
+    sw.appendChild(customColor);
+    wrap.querySelector('#insDeleteTable').addEventListener('click', ()=>{
+      state.tables = state.tables.filter(x=>x.id!==t.id);
+      state.relationships = state.relationships.filter(r=>r.fromTable!==t.id && r.toTable!==t.id);
+      clearSelection(); fullRender(); persist();
+    });
+  } else {
+    const r = state.relationships.find(x=>x.id===state.selection.id);
+    if(!r){ clearSelection(); return; }
+    const ft = getTable(r.fromTable), tt = getTable(r.toTable);
+    const ffield = ft ? getField(ft, r.fromField) : null;
+    const tfield = tt ? getField(tt, r.toField) : null;
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <h3>Relationship</h3>
+      <div class="rel-summary">${ft?escapeAttr(ft.name):'?'}.${ffield?escapeAttr(ffield.name):'?'}<br>→ ${tt?escapeAttr(tt.name):'?'}.${tfield?escapeAttr(tfield.name):'?'}</div>
+      <div class="two-col">
+        <div class="field-group">
+          <label>Start (near ${ft?escapeAttr(ft.name):'A'})</label>
+          <select id="insCardFrom">${CARD_OPTS.map(o=>`<option value="${o.v}" ${r.cardFrom===o.v?'selected':''}>${o.label}</option>`).join('')}</select>
+        </div>
+        <div class="field-group">
+          <label>End (near ${tt?escapeAttr(tt.name):'B'})</label>
+          <select id="insCardTo">${CARD_OPTS.map(o=>`<option value="${o.v}" ${r.cardTo===o.v?'selected':''}>${o.label}</option>`).join('')}</select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Label (optional)</label>
+        <input type="text" id="insRelLabel" value="${escapeAttr(r.label||'')}" placeholder="e.g. places">
+      </div>
+      <hr class="sep">
+      <button class="btn danger" id="insDeleteRel" style="align-self:flex-start;">Delete relationship</button>
+    `;
+    inspector.appendChild(wrap);
+    wrap.querySelector('#insCardFrom').addEventListener('change', e=>{ r.cardFrom=e.target.value; renderRelationships(); persist(); });
+    wrap.querySelector('#insCardTo').addEventListener('change', e=>{ r.cardTo=e.target.value; renderRelationships(); persist(); });
+    wrap.querySelector('#insRelLabel').addEventListener('input', e=>{ r.label=e.target.value; renderRelationships(); persist(); });
+    wrap.querySelector('#insDeleteRel').addEventListener('click', ()=>{
+      state.relationships = state.relationships.filter(x=>x.id!==r.id);
+      clearSelection(); fullRender(); persist();
+    });
+  }
+}
+
+/* ============ Canvas pan & zoom ============ */
+let spaceHeld = false;
+
+function beginPan(e){
+  const startX = e.clientX, startY = e.clientY, ox = view.x, oy = view.y;
+  wrapper.classList.add('panning');
+  function onMove(ev){
+    view.x = ox + (ev.clientX-startX);
+    view.y = oy + (ev.clientY-startY);
+    applyView();
+  }
+  function onUp(){
+    wrapper.classList.remove('panning');
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+wrapper.addEventListener('mousedown', e=>{
+  // Middle-click or space+drag always pans, regardless of mode or what's under the cursor.
+  if(e.button===1 || (spaceHeld && e.button===0)){
+    e.preventDefault();
+    beginPan(e);
+    return;
+  }
+  if(connectMode) return;
+  if(e.target !== wrapper && e.target !== world) return;
+  clearSelection();
+  beginPan(e);
+});
+wrapper.addEventListener('auxclick', e=>{ if(e.button===1) e.preventDefault(); });
+
+wrapper.addEventListener('wheel', e=>{
+  e.preventDefault();
+  // Pinch-to-zoom on trackpads is reported as a wheel event with ctrlKey set;
+  // holding Ctrl/Cmd with a regular scroll also zooms. Plain scroll pans instead,
+  // which keeps casual scrolling from unexpectedly rescaling the canvas.
+  if(e.ctrlKey || e.metaKey){
+    const factor = Math.pow(1.0025, -e.deltaY);
+    zoomAt(e.clientX, e.clientY, factor);
+  } else {
+    view.x -= e.shiftKey ? e.deltaY : e.deltaX;
+    view.y -= e.shiftKey ? 0 : e.deltaY;
+    applyView();
+  }
+}, {passive:false});
+
+// Touch: one finger pans, two fingers pinch-zoom.
+let touchState = null;
+function touchDist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
+function touchMid(t){ return {x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2}; }
+wrapper.addEventListener('touchstart', e=>{
+  if(connectMode || pendingConnect) return;
+  if(e.touches.length===1){
+    touchState = {mode:'pan', x:e.touches[0].clientX, y:e.touches[0].clientY, ox:view.x, oy:view.y};
+  } else if(e.touches.length===2){
+    touchState = {mode:'zoom', dist:touchDist(e.touches), mid:touchMid(e.touches), scale:view.scale, ox:view.x, oy:view.y};
+  }
+}, {passive:true});
+wrapper.addEventListener('touchmove', e=>{
+  if(!touchState) return;
+  e.preventDefault();
+  if(touchState.mode==='pan' && e.touches.length===1){
+    view.x = touchState.ox + (e.touches[0].clientX - touchState.x);
+    view.y = touchState.oy + (e.touches[0].clientY - touchState.y);
+    applyView();
+  } else if(touchState.mode==='zoom' && e.touches.length===2){
+    const factor = touchDist(e.touches)/touchState.dist;
+    view.scale = touchState.scale;
+    view.x = touchState.ox; view.y = touchState.oy;
+    zoomAt(touchState.mid.x, touchState.mid.y, factor);
+  }
+}, {passive:false});
+wrapper.addEventListener('touchend', ()=>{ touchState = null; });
+
+document.addEventListener('keydown', e=>{
+  if(e.code==='Space' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+    spaceHeld = true;
+    wrapper.style.cursor = 'grab';
+  }
+});
+document.addEventListener('keyup', e=>{
+  if(e.code==='Space'){ spaceHeld = false; wrapper.style.cursor = ''; }
+});
+
+function zoomAt(cx, cy, factor){
+  const r = wrapper.getBoundingClientRect();
+  const localX = cx - r.left, localY = cy - r.top;
+  const worldX = (localX - view.x)/view.scale, worldY = (localY - view.y)/view.scale;
+  view.scale = Math.min(2.5, Math.max(0.25, view.scale*factor));
+  view.x = localX - worldX*view.scale;
+  view.y = localY - worldY*view.scale;
+  applyView();
+}
+
+document.getElementById('zoomIn').addEventListener('click', ()=>{
+  const r = wrapper.getBoundingClientRect();
+  zoomAt(r.left+r.width/2, r.top+r.height/2, 1.2);
+});
+document.getElementById('zoomOut').addEventListener('click', ()=>{
+  const r = wrapper.getBoundingClientRect();
+  zoomAt(r.left+r.width/2, r.top+r.height/2, 1/1.2);
+});
+document.getElementById('zoomFit').addEventListener('click', fitToScreen);
+
+function fitToScreen(){
+  if(state.tables.length===0){ view={x:60,y:40,scale:1}; applyView(); return; }
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  state.tables.forEach(t=>{
+    minX=Math.min(minX,t.x); minY=Math.min(minY,t.y);
+    maxX=Math.max(maxX,t.x+t.width); maxY=Math.max(maxY,t.y+tableHeight(t));
+  });
+  const pad=60;
+  minX-=pad; minY-=pad; maxX+=pad; maxY+=pad;
+  const r = wrapper.getBoundingClientRect();
+  const scale = Math.min(r.width/(maxX-minX), r.height/(maxY-minY), 1.3);
+  view.scale = Math.max(0.25, scale);
+  view.x = -minX*view.scale + (r.width - (maxX-minX)*view.scale)/2;
+  view.y = -minY*view.scale + (r.height - (maxY-minY)*view.scale)/2;
+  applyView();
+}
+
+/* ============ Toolbar actions ============ */
+document.getElementById('btnAddTable').addEventListener('click', ()=>{
+  const center = screenToWorld(wrapper.getBoundingClientRect().left + wrapper.clientWidth/2,
+                                wrapper.getBoundingClientRect().top + wrapper.clientHeight/2);
+  const t = {
+    id: uid('t'), name:'new_table', x: Math.max(0,center.x-110), y: Math.max(0,center.y-60),
+    width:210, color: PALETTE[state.tables.length % PALETTE.length],
+    fields:[{id:uid('f'), name:'id', type:'INT', pk:true, fk:false, nn:true, uq:false}]
+  };
+  state.tables.push(t);
+  fullRender(); selectItem('table', t.id); persist();
+});
+
+document.getElementById('btnConnect').addEventListener('click', function(){
+  connectMode = !connectMode;
+  this.classList.toggle('active', connectMode);
+  wrapper.classList.toggle('connecting', connectMode);
+  setDotsActive(connectMode);
+  document.querySelectorAll('.tbl-resize').forEach(r=>r.classList.toggle('resize-disabled', connectMode));
+  if(connectMode) showCanvasHint('Drag from any field dot to another field to connect them');
+  else hideCanvasHint();
+  toast(connectMode ? 'Connect mode: drag from a field dot to another field' : 'Connect mode off');
+});
+
+document.getElementById('zoomLabel').addEventListener('dblclick', ()=>{
+  const r = wrapper.getBoundingClientRect();
+  zoomAt(r.left+r.width/2, r.top+r.height/2, 1/view.scale);
+});
+
+const shortcutsPop = document.getElementById('shortcutsPop');
+document.getElementById('btnHelp').addEventListener('click', function(){
+  shortcutsPop.classList.toggle('hidden');
+  this.classList.toggle('active', !shortcutsPop.classList.contains('hidden'));
+});
+document.addEventListener('mousedown', e=>{
+  if(!shortcutsPop.classList.contains('hidden') && !shortcutsPop.contains(e.target) && e.target.id!=='btnHelp'){
+    shortcutsPop.classList.add('hidden');
+    document.getElementById('btnHelp').classList.remove('active');
+  }
+});
+
+document.getElementById('selLineStyle').addEventListener('change', e=>{
+  state.settings.lineStyle = e.target.value; renderRelationships(); persist();
+});
+document.getElementById('selGrid').addEventListener('change', e=>{
+  state.settings.grid = e.target.value; applyGridStyle(); persist();
+});
+document.getElementById('btnTheme').addEventListener('click', function(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur==='dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  state.settings.theme = next;
+  this.textContent = next==='dark' ? '☀' : '☾';
+  renderRelationships();
+  persist();
+});
+document.getElementById('btnClear').addEventListener('click', ()=>{
+  if(!confirm('Start a new diagram? Unsaved export will be lost (auto-save data will be cleared).')) return;
+  state = freshState();
+  diagramTitle.value = 'Untitled ERD';
+  clearSelection(); fullRender(); fitToScreen(); persist();
+});
+diagramTitle.addEventListener('blur', persist);
+diagramTitle.addEventListener('keydown', e=>{ if(e.key==='Enter') diagramTitle.blur(); });
+
+document.addEventListener('keydown', e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+  if((e.key==='Delete' || e.key==='Backspace') && state.selection){
+    if(state.selection.type==='table'){
+      state.tables = state.tables.filter(t=>t.id!==state.selection.id);
+      state.relationships = state.relationships.filter(r=>r.fromTable!==state.selection.id && r.toTable!==state.selection.id);
+    } else {
+      state.relationships = state.relationships.filter(r=>r.id!==state.selection.id);
+    }
+    clearSelection(); fullRender(); persist();
+  }
+  if(e.key==='Escape'){
+    if(pendingConnect && typeof cancelActiveConnect==='function') cancelActiveConnect();
+    if(connectMode){
+      connectMode=false; document.getElementById('btnConnect').classList.remove('active'); wrapper.classList.remove('connecting');
+      setDotsActive(false);
+    }
+  }
+  if(e.key==='+' || e.key==='='){
+    e.preventDefault();
+    const r = wrapper.getBoundingClientRect();
+    zoomAt(r.left+r.width/2, r.top+r.height/2, 1.2);
+  }
+  if(e.key==='-' || e.key==='_'){
+    e.preventDefault();
+    const r = wrapper.getBoundingClientRect();
+    zoomAt(r.left+r.width/2, r.top+r.height/2, 1/1.2);
+  }
+  if(e.key==='0'){
+    e.preventDefault();
+    const r = wrapper.getBoundingClientRect();
+    zoomAt(r.left+r.width/2, r.top+r.height/2, 1/view.scale);
+  }
+  if((e.key==='F' || e.key==='f') && e.shiftKey){
+    e.preventDefault();
+    fitToScreen();
+  }
+});
+
+/* ============ Export / Import ============ */
+function download(filename, content, type){
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+function safeName(){ return (diagramTitle.value||'diagram').trim().replace(/[^a-z0-9-_]+/gi,'_').toLowerCase() || 'diagram'; }
+
+document.getElementById('btnExportJson').addEventListener('click', ()=>{
+  const payload = { title: diagramTitle.value, ...state, selection:null };
+  download(safeName()+'.json', JSON.stringify(payload, null, 2), 'application/json');
+  toast('Exported JSON');
+});
+
+document.getElementById('btnImport').addEventListener('click', ()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change', e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      if(!data.tables) throw new Error('bad format');
+      state = { settings: data.settings || freshState().settings, tables: data.tables, relationships: data.relationships||[], selection:null };
+      diagramTitle.value = data.title || 'Imported ERD';
+      document.documentElement.setAttribute('data-theme', state.settings.theme || 'light');
+      document.getElementById('btnTheme').textContent = (state.settings.theme==='dark') ? '☀' : '☾';
+      document.getElementById('selLineStyle').value = state.settings.lineStyle||'curved';
+      document.getElementById('selGrid').value = state.settings.grid||'grid';
+      fullRender(); fitToScreen(); persist();
+      toast('Imported diagram');
+    }catch(err){
+      alert('Could not read that file as an ERD Studio diagram.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+function boundingBoxOfDiagram(){
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  state.tables.forEach(t=>{
+    minX=Math.min(minX,t.x); minY=Math.min(minY,t.y);
+    maxX=Math.max(maxX,t.x+t.width); maxY=Math.max(maxY,t.y+tableHeight(t));
+  });
+  if(!isFinite(minX)){ minX=0; minY=0; maxX=400; maxY=300; }
+  const pad=40;
+  return {minX:minX-pad, minY:minY-pad, w:(maxX-minX)+pad*2, h:(maxY-minY)+pad*2};
+}
+
+const EXPORT_TABLE_CSS = `
+  .etbl{font-family:${JSON.stringify('sans-serif')};border-radius:10px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+  .ehead{padding:9px 10px;font-weight:700;font-size:13px;color:#fff;font-family:sans-serif;}
+  .erow{display:flex;align-items:center;gap:6px;padding:4px 10px;font-size:11.5px;border-top:1px solid #D8DCE3;background:#fff;color:#1F2A44;font-family:monospace;}
+  .eflag{font-size:8px;font-weight:700;border:1px solid #D8DCE3;border-radius:4px;padding:0 3px;margin-right:1px;color:#5B6472;}
+  .eflag.on{background:#B8791C;color:#fff;border-color:#B8791C;}
+  .eflag.fk.on{background:#6C63B5;border-color:#6C63B5;}
+  .ename{flex:1;} .etype{color:#5B6472;font-size:10.5px;}
+`;
+
+function tableToStaticHtml(t){
+  const rows = t.fields.map(f=>`
+    <div class="erow">
+      <span class="eflag ${f.pk?'on':''}">PK</span><span class="eflag fk ${f.fk?'on':''}">FK</span>
+      <span class="eflag ${f.nn?'on':''}">NN</span><span class="eflag ${f.uq?'on':''}">UQ</span>
+      <span class="ename">${escapeXml(f.name)}</span><span class="etype">${escapeXml(f.type)}</span>
+    </div>`).join('');
+  return `<div class="etbl" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="ehead" style="background:${t.color}">${escapeXml(t.name)}</div>
+    ${rows}
+  </div>`;
+}
+
+// Builds just the background + connector lines/glyphs/labels as an SVG string,
+// with NO <foreignObject> — safe to rasterize onto a <canvas> without tainting it.
+function buildLinesSvgBody(bb){
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--canvas-bg').trim();
+  const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--ink-soft').trim();
+  let body = `<rect x="0" y="0" width="${bb.w}" height="${bb.h}" fill="${bg}"/>`;
+  state.relationships.forEach(r=>{
+    const ft = getTable(r.fromTable), tt = getTable(r.toTable);
+    if(!ft||!tt) return;
+    const geo = computeRelGeometry(r, ft, tt, state.settings.lineStyle);
+    const p1 = {x:geo.p1.x-bb.minX, y:geo.p1.y-bb.minY};
+    const p2 = {x:geo.p2.x-bb.minX, y:geo.p2.y-bb.minY};
+    const d = pathD(p1,p2,state.settings.lineStyle);
+    body += `<path d="${d}" stroke="${lineColor}" stroke-width="1.75" fill="none"/>`;
+    body += glyphSvg(p1.x,p1.y,geo.angle1,r.cardFrom,lineColor);
+    body += glyphSvg(p2.x,p2.y,geo.angle2,r.cardTo,lineColor);
+    if(r.label){
+      const mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
+      body += `<rect x="${mx-((r.label.length*3.6)+8)/2}" y="${my-9}" width="${(r.label.length*3.6)+8}" height="16" rx="4" fill="#fff" opacity="0.9"/>`;
+      body += `<text x="${mx}" y="${my+3}" text-anchor="middle" font-size="10.5" font-family="sans-serif" fill="${lineColor}">${escapeXml(r.label)}</text>`;
+    }
+  });
+  return {body, lineColor};
+}
+
+function buildExportSvgString(){
+  const bb = boundingBoxOfDiagram();
+  const {body: linesBody} = buildLinesSvgBody(bb);
+  let body = linesBody;
+  state.tables.forEach(t=>{
+    const h = tableHeight(t)-30;
+    body += `<foreignObject x="${t.x-bb.minX}" y="${t.y-bb.minY}" width="${t.width}" height="${h}">${tableToStaticHtml(t)}</foreignObject>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${bb.w}" height="${bb.h}" viewBox="0 0 ${bb.w} ${bb.h}">
+<style>${EXPORT_TABLE_CSS}</style>
+${body}
+</svg>`;
+}
+
+// ---- Canvas-native table drawing (used only for PNG export) ----
+// foreignObject-based SVGs taint a <canvas> when drawn via drawImage, so PNG
+// export draws tables with plain canvas primitives instead of HTML markup.
+function roundRectPath(ctx, x, y, w, h, r){
+  const {tl,tr,br,bl} = r;
+  ctx.beginPath();
+  ctx.moveTo(x+tl, y);
+  ctx.lineTo(x+w-tr, y);
+  ctx.arcTo(x+w, y, x+w, y+tr, tr);
+  ctx.lineTo(x+w, y+h-br);
+  ctx.arcTo(x+w, y+h, x+w-br, y+h, br);
+  ctx.lineTo(x+bl, y+h);
+  ctx.arcTo(x, y+h, x, y+h-bl, bl);
+  ctx.lineTo(x, y+tl);
+  ctx.arcTo(x, y, x+tl, y, tl);
+  ctx.closePath();
+}
+function drawFlagBadge(ctx, x, y, label, on, colorOn){
+  const w = label.length>2 ? 20 : 16, h = 12;
+  ctx.lineWidth = 1;
+  roundRectPath(ctx, x, y, w, h, {tl:3,tr:3,br:3,bl:3});
+  ctx.fillStyle = on ? colorOn : '#FFFFFF';
+  ctx.fill();
+  ctx.strokeStyle = on ? colorOn : '#D8DCE3';
+  ctx.stroke();
+  ctx.fillStyle = on ? '#FFFFFF' : '#5B6472';
+  ctx.font = '700 8px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, x+w/2, y+h/2+0.5);
+  return w;
+}
+function drawTablesOnCanvas(ctx, bb){
+  state.tables.forEach(t=>{
+    const x = t.x-bb.minX, y = t.y-bb.minY, w = t.width, h = tableHeight(t)-30;
+    // body background
+    roundRectPath(ctx, x, y, w, h, {tl:10,tr:10,br:10,bl:10});
+    ctx.fillStyle = '#FFFFFF';
+    ctx.save(); ctx.shadowColor='rgba(0,0,0,.18)'; ctx.shadowBlur=6; ctx.shadowOffsetY=2; ctx.fill(); ctx.restore();
+    // header
+    roundRectPath(ctx, x, y, w, HEAD_H, {tl:10,tr:10,br:0,bl:0});
+    ctx.fillStyle = t.color;
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '700 13px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.name, x+10, y+HEAD_H/2+1, w-20);
+    // rows
+    t.fields.forEach((f,i)=>{
+      const ry = y + HEAD_H + i*ROW_H;
+      if(i>0){
+        ctx.strokeStyle = '#D8DCE3'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, ry); ctx.lineTo(x+w, ry); ctx.stroke();
+      }
+      let fx = x + 10;
+      fx += drawFlagBadge(ctx, fx, ry+(ROW_H-12)/2, 'PK', f.pk, '#B8791C') + 2;
+      fx += drawFlagBadge(ctx, fx, ry+(ROW_H-12)/2, 'FK', f.fk, '#6C63B5') + 2;
+      fx += drawFlagBadge(ctx, fx, ry+(ROW_H-12)/2, 'NN', f.nn, '#3B6EF0') + 2;
+      fx += drawFlagBadge(ctx, fx, ry+(ROW_H-12)/2, 'UQ', f.uq, '#3B6EF0') + 6;
+      ctx.fillStyle = '#1F2A44';
+      ctx.font = '12px monospace';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      const typeW = ctx.measureText(f.type).width;
+      const nameMaxW = Math.max(20, (x+w-10-typeW-8) - fx);
+      ctx.fillText(f.name, fx, ry+ROW_H/2+1, nameMaxW);
+      ctx.fillStyle = '#5B6472';
+      ctx.font = '10.5px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(f.type, x+w-10, ry+ROW_H/2+1);
+    });
+  });
+}
+
+document.getElementById('btnExportSvg').addEventListener('click', ()=>{
+  download(safeName()+'.svg', buildExportSvgString(), 'image/svg+xml');
+  toast('Exported SVG');
+});
+
+document.getElementById('btnExportPng').addEventListener('click', ()=>{
+  const bb = boundingBoxOfDiagram();
+  const {body: linesBody} = buildLinesSvgBody(bb);
+  const linesSvg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${bb.w}" height="${bb.h}" viewBox="0 0 ${bb.w} ${bb.h}">${linesBody}</svg>`;
+  const scaleFactor = 2;
+  const img = new Image();
+  const blob = new Blob([linesSvg], {type:'image/svg+xml;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  img.onload = () => {
+    try{
+      const canvas = document.createElement('canvas');
+      canvas.width = bb.w*scaleFactor; canvas.height = bb.h*scaleFactor;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      drawTablesOnCanvas(ctx, bb); // tables drawn natively — keeps canvas untainted
+      canvas.toBlob(pngBlob=>{
+        if(!pngBlob){ toast('PNG export failed — try Export SVG instead'); return; }
+        const a = document.createElement('a');
+        const pngUrl = URL.createObjectURL(pngBlob);
+        a.href = pngUrl; a.download = safeName()+'.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(pngUrl), 2000);
+        toast('Exported PNG');
+      }, 'image/png');
+    }catch(err){
+      toast('PNG export failed — try Export SVG instead');
+      URL.revokeObjectURL(url);
+    }
+  };
+  img.onerror = () => { toast('PNG export failed — try Export SVG instead'); URL.revokeObjectURL(url); };
+  img.src = url;
+});
+
+/* ============ Persistence (per-session storage API) ============ */
+let persistTimer = null;
+function persist(){
+  clearTimeout(persistTimer);
+  persistTimer = setTimeout(async ()=>{
+    try{
+      if(window.storage){
+        await window.storage.set('erd-studio:diagram', JSON.stringify({title:diagramTitle.value, ...state, selection:null}), false);
+      }
+    }catch(err){ /* storage not available - export/import still works */ }
+  }, 400);
+}
+async function tryLoadPersisted(){
+  try{
+    if(window.storage){
+      const res = await window.storage.get('erd-studio:diagram', false);
+      if(res && res.value){
+        const data = JSON.parse(res.value);
+        if(data && data.tables){
+          state = { settings:data.settings||freshState().settings, tables:data.tables, relationships:data.relationships||[], selection:null };
+          diagramTitle.value = data.title || 'Untitled ERD';
+          return true;
+        }
+      }
+    }
+  }catch(err){ /* fall through to sample */ }
+  return false;
+}
+
+/* ============ Init ============ */
+(async function init(){
+  document.getElementById('typeList').innerHTML = TYPES.map(t=>`<option value="${t}"></option>`).join('');
+  const loaded = await tryLoadPersisted();
+  state = loaded ? state : sampleState();
+  document.documentElement.setAttribute('data-theme', state.settings.theme||'light');
+  document.getElementById('btnTheme').textContent = (state.settings.theme==='dark') ? '☀' : '☾';
+  document.getElementById('selLineStyle').value = state.settings.lineStyle||'curved';
+  document.getElementById('selGrid').value = state.settings.grid||'grid';
+  applyView();
+  fullRender();
+  requestAnimationFrame(fitToScreen);
+})();
+
+})();
+</script>
+</body>
+</html>
