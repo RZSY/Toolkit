@@ -96,9 +96,9 @@ If it happens to save someone else's time too, even better.
 
 ---
 
-# The Forum
+# The Comment Section
 
-There is also a **forum page** included with the project. Also, it's reused asset from a different project I made during Diploma. You can check that one out here: https://mystikshorror.github.io/
+There is also a **"forum page"** included with the project. Also, it's reused asset from a different project I made during Diploma. You can check that one out here: https://mystikshorror.github.io/
 
 Why?
 
