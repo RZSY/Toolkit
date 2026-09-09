@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Toolkit</title>
+    <meta name="description" content="What Toolkit is, why it exists, and what's in it.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Toolkit">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="About — Toolkit">
+    <meta property="og:description" content="What Toolkit is, why it exists, and what's in it.">
+    <meta property="og:image" content="ico/tkico.jpg">
+
+    <link rel="icon" type="image/jpeg" href="ico/tkico.jpg">
+    <link rel="apple-touch-icon" href="ico/tkico.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f4f4f4;
+            --surface: #ffffff;
+            --ink: #161616;
+            --ink-soft: #525252;
+            --accent: #0f62fe;
+            --accent-ink: #ffffff;
+            --line: #e0e0e0;
+        }
+
+        html[data-theme="dark"] {
+            --bg: #161616;
+            --surface: #262626;
+            --ink: #f4f4f4;
+            --ink-soft: #c6c6c6;
+            --accent: #4589ff;
+            --accent-ink: #161616;
+            --line: #393939;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            margin: 0;
+            min-height: 100vh;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        a { color: inherit; }
+
+        /* ---- header (shared with index) ---- */
+        .site-header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .brand .wordmark {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            font-size: 14px;
+        }
+
+        .site-nav a {
+            text-decoration: none;
+            color: var(--ink-soft);
+        }
+
+        .site-nav a.current {
+            color: var(--ink);
+        }
+
+        .site-nav a:hover {
+            color: var(--ink);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .theme-toggle:hover { color: var(--ink); }
+
+        /* ---- content ---- */
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 56px 24px 60px;
+        }
+
+        main h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0 0 24px;
+        }
+
+        main p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin: 0 0 20px;
+            max-width: 62ch;
+        }
+
+        main h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 40px 0 14px;
+        }
+
+        /* ---- slide / carousel ---- */
+        .slide {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 32px 0 8px;
+        }
+
+        .slide-arrow {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--ink-soft);
+            cursor: pointer;
+            padding: 4px 6px;
+            flex: none;
+        }
+
+        .slide-arrow:hover { color: var(--ink); }
+
+        .slide-frame {
+            flex: 1;
+            aspect-ratio: 21 / 9;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-frame img {
+            max-width: 96px;
+            max-height: 96px;
+            object-fit: contain;
+        }
+
+        .slide-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--ink-soft);
+            margin: 0 0 30px;
+        }
+
+        .tool-list {
+            list-style: none;
+            margin: 0 0 20px;
+            padding: 0;
+        }
+
+        .tool-list li {
+            border-top: 1px solid var(--line);
+            padding: 14px 0;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .tool-list a {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .tool-list a:hover { color: var(--accent); }
+
+        .tool-list .desc {
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--ink-soft);
+            text-align: right;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        /* ---- footer ---- */
+        footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            font-size: 13px;
+            color: var(--ink-soft);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="ico/tkico.jpg" alt="">
+            <span class="wordmark">Toolkit</span>
+        </a>
+        <nav class="site-nav">
+            <a href="about.html" class="current">About</a>
+            <a href="manual.pdf" target="_blank" rel="noopener">Manual</a>
+            <button class="theme-toggle" id="theme-toggle" type="button">Dark mode</button>
+        </nav>
+    </header>
+
+    <main>
+        <h1>About</h1>
+
+        <p>Toolkit, it's not a good tool, because it's a box that keeps tools. Or is it good? Because it is doing what it is advertised as such. Only God, Aristotle, and probably my orange cat that looks so smart knows. What is Toolkit? Why does it exist? Why? The answer MIGHT SHOCK YOU!!!</p>
+        <p>It exists to keep and catalogue the tools I make to make sure I can do my work easier. I hate using Microsoft Office to make graphs and stuff, I use LibreOffice mostly, cuz it's free, but there isn't much in terms of choice, + WPS keeps wanting me to buy "pREmIuM". Making graphs and all that other stuff on Words is so hard for me (I'm a dumb dumb). So I made this thing that is significantly more complicated. But I know how to use it cuz I made it.</p>
+        <p>Because I made this for myself to use, I know how hated Kingshot ads are (YouTube is no longer the after-school fun place I hang around in the big 2026)</p>
+
+        <div class="slide">
+            <button class="slide-arrow" id="prev" aria-label="Previous">&#10094;</button>
+            <div class="slide-frame">
+                <img id="slide-img" src="ico/tkico.jpg" alt="">
+            </div>
+            <button class="slide-arrow" id="next" aria-label="Next">&#10095;</button>
+        </div>
+        <p class="slide-caption" id="slide-caption">Toolkit</p>
+
+        <h2>What's in here</h2>
+        <ul class="tool-list">
+            <li>
+                <a href="chartsmith.html">
+                    Chartsmith
+                    <span class="desc">You can make charts and stuff here.</span>
+                </a>
+            </li>
+            <li>
+                <a href="entity-family.html">
+                    Entity Family
+                    <span class="desc">A less painful way to sketch ERDs, it's still painful though.</span>
+                </a>
+            </li>
+            <li>
+                <a href="timeline-generator.html">
+                    Timeline Builder
+                    <span class="desc">Make those I-Think maps history teachers back in my days (2016) loved to make us do.</span>
+                </a>
+            </li>
+        </ul>
+
+        <h2>License</h2>
+        <p>Everything is MIT licensed. Take what's useful, leave be what isn't, and don't feel obligated to thank me, but please do pray that I find myself a very kind and very lovely wife in like 6 to 8 years.</p>
+
+        <a class="back-link" href="index.html">&larr; Back to Toolkit</a>
+    </main>
+
+    <footer>
+        Toolkit &copy; 2026 &middot; MIT Licensed
+    </footer>
+
+    <script>
+        // Theme toggle — mirrors index.html so the choice is shared via localStorage.
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var initial = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            var btn = document.getElementById('theme-toggle');
+
+            function updateLabel() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                btn.textContent = isDark ? 'Light mode' : 'Dark mode';
+            }
+
+            if (initial === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            updateLabel();
+
+            btn.addEventListener('click', function () {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+                try { localStorage.setItem('theme', isDark ? 'light' : 'dark'); } catch (e) {}
+                updateLabel();
+            });
+        })();
+
+        // Small slide/carousel cycling through the site icon and each tool's icon.
+        (function () {
+            var slides = [
+                { src: 'ico/tkico.jpg', caption: 'Toolkit' },
+                { src: 'ico/csico.jpg', caption: 'Chartsmith' },
+                { src: 'ico/efico.jpg', caption: 'Entity Family' },
+                { src: 'ico/tbico.jpg', caption: 'Timeline Builder' }
+				{ src: 'ico/jun.jpg', caption: 'Jun Sang Binatang Pintar' }
+				{ src: 'ico/nimbus.jpg', caption: 'Nimbus Si Awan Hitam' }
+				{ src: 'ico/pelam.jpg', caption: 'Mango Harum Manis' }
+            ];
+            var index = 0;
+            var img = document.getElementById('slide-img');
+            var caption = document.getElementById('slide-caption');
+
+            function show(i) {
+                index = (i + slides.length) % slides.length;
+                img.src = slides[index].src;
+                caption.textContent = slides[index].caption;
+            }
+
+            document.getElementById('prev').addEventListener('click', function () { show(index - 1); });
+            document.getElementById('next').addEventListener('click', function () { show(index + 1); });
+        })();
+    </script>
+
+</body>
+</html>
