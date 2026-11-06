@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments — Toolkit</title>
+    <meta name="description" content="Comments and discussion on Toolkit and its tools.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Toolkit">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Comments — Toolkit">
+    <meta property="og:description" content="Comments and discussion on Toolkit and its tools.">
+    <meta property="og:image" content="../ico/tkico.jpg">
+
+    <link rel="icon" type="image/jpeg" href="../ico/tkico.jpg">
+    <link rel="apple-touch-icon" href="../ico/tkico.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="../index.html">
+            <img src="../ico/tkico.jpg" alt="">
+            <span class="wordmark">Toolkit</span>
+        </a>
+        <nav class="site-nav">
+            <a href="../about/index.html">About</a>
+            <a href="index.html" class="current">Comments</a>
+            <a href="../manual.pdf" target="_blank" rel="noopener">Manual</a>
+            <button class="theme-toggle" id="theme-toggle" type="button">Dark mode</button>
+        </nav>
+    </header>
+
+    <div class="account-row">
+        <div id="authBarGuest">
+            <button onclick="openAuthModal('login')">Log in</button>
+            &nbsp;&middot;&nbsp;
+            <button class="primary" onclick="openAuthModal('register')">Register</button>
+        </div>
+        <div id="authBarUser" style="display:none;">
+            <span class="username" id="authBarName"></span>
+            &nbsp;&middot;&nbsp;
+            <button onclick="signOut()">Log out</button>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="authOverlay" class="auth-overlay" onclick="closeAuthModal(event)">
+        <div class="auth-modal">
+            <div class="auth-tabs">
+                <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Log in</button>
+                <button id="tabRegister" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <div id="authPanelLogin">
+                <input type="email" id="loginEmail" placeholder="Email" />
+                <input type="password" id="loginPassword" placeholder="Password" />
+                <p id="loginError" class="auth-error"></p>
+                <button id="loginBtn" class="btn full" onclick="doLogin()">Sign in</button>
+            </div>
+
+            <div id="authPanelRegister" style="display:none;">
+                <input type="text" id="regUsername" placeholder="Display name" />
+                <input type="email" id="regEmail" placeholder="Email" />
+                <input type="password" id="regPassword" placeholder="Password (min 6 chars)" />
+                <p id="regError" class="auth-error"></p>
+                <button id="regBtn" class="btn full" onclick="doRegister()">Create account</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <h1>Comments</h1>
+        <p class="lede">Thoughts, bug reports, requests — whatever. Sign in to join in.</p>
+
+        <!-- Compose (shown when logged in) -->
+        <section id="commentCompose" class="compose-card" style="display:none;">
+            <textarea id="postBody" placeholder="Write a comment…" maxlength="1800"></textarea>
+            <div class="compose-footer">
+                <span id="charCount" class="char-hint">0 / 1800</span>
+                <button id="submitPostBtn" class="btn" onclick="submitPost()">Comment</button>
+            </div>
+        </section>
+
+        <!-- Gate (shown when logged out) -->
+        <section id="commentGate" class="gate-card">
+            <p>Sign in to leave a comment.</p>
+            <button class="btn" onclick="openAuthModal('login')">Log in / Register</button>
+        </section>
+
+        <div class="comment-controls">
+            <p id="commentCountLabel" class="comment-count">0 comments</p>
+            <div class="sort-group">
+                <button class="sort-btn active" onclick="setSort('new', this)">New</button>
+                <button class="sort-btn" onclick="setSort('top', this)">Top</button>
+            </div>
+        </div>
+
+        <div id="commentList"><div class="loading-text">Loading…</div></div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <footer>
+        Toolkit &copy; 2026 &middot; MIT Licensed
+    </footer>
+
+    <script src="theme.js"></script>
+    <script>window.TOOLKIT_PAGE_ID = 'comments';</script>
+    <!-- Firebase compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="comments.js"></script>
+</body>
+</html>

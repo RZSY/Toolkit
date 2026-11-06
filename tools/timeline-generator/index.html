@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeline Builder</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="../../ico/tbico.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="../../ico/tbico.jpg">
+<link rel="apple-touch-icon" href="../../ico/tbico.jpg">
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Timeline Builder is a free online tool for creating clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta name="keywords" content="timeline builder, timeline maker, visual timeline, create timeline, timeline generator, history timeline, project timeline, printable timeline">
+<meta name="author" content="Timeline Builder">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Timeline Builder">
+<meta property="og:description" content="Create clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta property="og:image" content="../../ico/tbico.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Timeline Builder">
+<meta name="twitter:description" content="Create clean, printable visual timelines. Add events, customize styles, and export as an image or PDF.">
+<meta name="twitter:image" content="../../ico/tbico.jpg">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <a href="../../index.html" style="text-decoration:none;color:inherit;"><h1 class="brand" title="Back to Toolkit">Timeline Builder</h1></a>
+    <p class="brand-sub">Configure events, styling, and export a finished timeline as an image or PDF.</p>
+
+    <!-- 1. Header text -->
+    <div class="panel">
+      <h2><span class="num">1</span>Title</h2>
+      <label>Main heading</label>
+      <input type="text" id="mainTitle" value="TIMELINE">
+      <label>Subheading</label>
+      <input type="text" id="subTitle" value="Iunno something I guess">
+    </div>
+
+    <!-- 2. Layout style -->
+    <div class="panel">
+      <h2><span class="num">2</span>Layout style</h2>
+      <div class="style-grid" id="layoutGrid">
+        <div class="style-opt active" data-layout="vertical">
+          <svg viewBox="0 0 60 28"><line x1="30" y1="2" x2="30" y2="26" stroke="currentColor" stroke-width="2"/><rect x="6" y="4" width="18" height="8" fill="currentColor" opacity="0.6"/><rect x="36" y="16" width="18" height="8" fill="currentColor" opacity="0.6"/></svg>
+          Alternating
+        </div>
+        <div class="style-opt" data-layout="list">
+          <svg viewBox="0 0 60 28"><line x1="10" y1="2" x2="10" y2="26" stroke="currentColor" stroke-width="2"/><rect x="16" y="3" width="38" height="6" fill="currentColor" opacity="0.6"/><rect x="16" y="12" width="38" height="6" fill="currentColor" opacity="0.6"/><rect x="16" y="21" width="38" height="6" fill="currentColor" opacity="0.6"/></svg>
+          Left list
+        </div>
+        <div class="style-opt" data-layout="horizontal">
+          <svg viewBox="0 0 60 28"><line x1="2" y1="14" x2="58" y2="14" stroke="currentColor" stroke-width="2"/><rect x="4" y="16" width="12" height="9" fill="currentColor" opacity="0.6"/><rect x="24" y="2" width="12" height="9" fill="currentColor" opacity="0.6"/><rect x="44" y="16" width="12" height="9" fill="currentColor" opacity="0.6"/></svg>
+          Horizontal
+        </div>
+        <div class="style-opt" data-layout="grid">
+          <svg viewBox="0 0 60 28"><rect x="3" y="3" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="33" y="3" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="3" y="16" width="24" height="10" fill="currentColor" opacity="0.6"/><rect x="33" y="16" width="24" height="10" fill="currentColor" opacity="0.6"/></svg>
+          Card grid
+        </div>
+        <div class="style-opt" data-layout="chevron">
+          <svg viewBox="0 0 60 28"><rect x="4" y="2" width="10" height="8" fill="currentColor" opacity="0.5"/><polygon points="16,10 26,10 30,14 26,18 16,18 20,14" fill="currentColor" opacity="0.8"/><rect x="34" y="18" width="10" height="8" fill="currentColor" opacity="0.5"/><polygon points="30,10 40,10 44,14 40,18 30,18 34,14" fill="currentColor" opacity="0.8"/></svg>
+          Chevron ribbon
+        </div>
+        <div class="style-opt" data-layout="axis">
+          <svg viewBox="0 0 60 28"><rect x="4" y="20" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="26" y="2" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="48" y="20" width="8" height="6" fill="currentColor" opacity="0.5"/><rect x="2" y="12" width="56" height="5" fill="currentColor" opacity="0.8"/></svg>
+          Axis ruler
+        </div>
+      </div>
+      <div class="hint">"Chevron ribbon" and "Axis ruler" are built for wide, landscape canvases. "Alternating" and "Left list" scale to any number of events and suit portrait.</div>
+      <label>Canvas orientation</label>
+      <select id="orientation">
+        <option value="landscape" selected>Landscape (wide)</option>
+        <option value="square">Square</option>
+        <option value="portrait">Portrait (tall)</option>
+      </select>
+    </div>
+
+    <!-- 3. Color theme -->
+    <div class="panel">
+      <h2><span class="num">3</span>Color palette</h2>
+      <div class="swatches" id="paletteSwatches"></div>
+      <label style="margin-top:14px;">Background</label>
+      <div class="row2">
+        <input type="color" id="bgColor" value="#ffffff">
+        <select id="bgPreset">
+          <option value="#ffffff">White</option>
+          <option value="#F7F5F0">Warm paper</option>
+          <option value="#111318">Ink (dark mode)</option>
+          <option value="#EAF2F2">Pale teal</option>
+        </select>
+      </div>
+      <label>Card corner style</label>
+      <select id="cardRadius">
+        <option value="14">Rounded</option>
+        <option value="4" selected>Soft square</option>
+        <option value="0">Sharp square</option>
+      </select>
+    </div>
+
+    <!-- 4. Typography -->
+    <div class="panel">
+      <h2><span class="num">4</span>Typography</h2>
+      <label>Font family</label>
+      <select id="fontFamily">
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="Arial, Helvetica, sans-serif" selected>Arial</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Courier New', Courier, monospace">Courier New</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+        <option value="'Palatino Linotype', Palatino, serif">Palatino</option>
+      </select>
+      <div class="row2">
+        <div>
+          <label>Heading size (px)</label>
+          <input type="number" id="titleSize" value="42" min="16" max="96">
+        </div>
+        <div>
+          <label>Body size (px)</label>
+          <input type="number" id="bodySize" value="14" min="9" max="28">
+        </div>
+      </div>
+      <label>Event title weight</label>
+      <select id="itemTitleWeight">
+        <option value="600">Medium</option>
+        <option value="700" selected>Bold</option>
+        <option value="800">Extra bold</option>
+      </select>
+    </div>
+
+    <!-- 5. Events -->
+    <div class="panel">
+      <h2><span class="num">5</span>Events</h2>
+      <div class="items-list" id="itemsList"></div>
+      <button class="add-btn" id="addItemBtn">+ Add event</button>
+    </div>
+
+    <!-- 6. Export -->
+    <div class="panel">
+      <h2><span class="num">6</span>Export</h2>
+      <label>File name</label>
+      <input type="text" id="fileName" value="my-timeline">
+      <label>Export resolution</label>
+      <select id="exportScale">
+        <option value="1">Standard (1x)</option>
+        <option value="2" selected>High (2x)</option>
+        <option value="3">Ultra (3x)</option>
+      </select>
+      <div class="export-grid">
+        <button class="btn" data-format="png">Export PNG</button>
+        <button class="btn" data-format="jpeg">Export JPEG</button>
+        <button class="btn" data-format="webp">Export WEBP</button>
+        <button class="btn" data-format="pdf">Export PDF</button>
+      </div>
+      <div class="hint" id="exportStatus"></div>
+    </div>
+  </aside>
+
+  <!-- ============ PREVIEW ============ -->
+  <main class="preview-wrap">
+    <div class="preview-toolbar">
+      <div class="status">Live preview — this is exactly what gets exported.</div>
+      <div class="zoom-controls">
+        <button id="zoomOut">–</button>
+        <span id="zoomLabel">80%</span>
+        <button id="zoomIn">+</button>
+      </div>
+    </div>
+    <div id="canvasArea">
+      <div id="tlRoot" class="layout-vertical">
+        <div class="tl-header">
+          <h1 class="tl-title" id="renderTitle">TIMELINE</h1>
+          <p class="tl-subtitle" id="renderSubtitle">Iunno something I guess</p>
+        </div>
+        <div class="tl-track" id="tlTrack"></div>
+        <div class="credit-mark">made with Timeline Builder</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

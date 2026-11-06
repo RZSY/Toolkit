@@ -1,0 +1,107 @@
+:root {
+  --app: #131419;
+  --panel: #1B1D24;
+  --panel-border: #2A2D38;
+  --panel-border2: #333744;
+  --canvas: #F6F3EC;
+  --ink: #E9E7DF;
+  --ink-dim: #8D909D;
+  --accent: #4FA79B;
+  --accent-soft: rgba(79,167,155,0.18);
+  --warn: #D18A3D;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; height: 100%; background: var(--app);
+}
+#app {
+  font-family: 'Söhne', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: var(--app);
+  color: var(--ink);
+  width: 100%;
+  height: 100vh;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+button, input, textarea { font-family: inherit; }
+
+.fc-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: #12141A; border: 1px solid var(--panel-border2); color: var(--ink);
+  border-radius: 7px; padding: 7px 10px; font-size: 12px;
+  cursor: pointer; transition: background .12s ease, border-color .12s ease, color .12s ease;
+}
+.fc-btn:hover { border-color: var(--panel-border2); background: #171923; }
+.fc-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fc-btn-block { width: 100%; justify-content: center; }
+.fc-btn-square { flex: 1; justify-content: center; }
+.fc-icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; padding: 0; border-radius: 6px;
+}
+.fc-active { background: var(--accent-soft) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+
+.fc-swatch { width: 22px; height: 22px; border-radius: 6px; padding: 0; border: 1px solid rgba(255,255,255,0.15); }
+.fc-swatch:hover { transform: scale(1.08); }
+.fc-swatch-active { border: 2px solid var(--accent) !important; }
+
+input[type=text].fc-input, textarea.fc-input {
+  background: #12141A; border: 1px solid var(--panel-border2); color: var(--ink);
+  border-radius: 6px; padding: 7px 9px; font-size: 13px; width: 100%; resize: vertical;
+}
+input[type=text].fc-input:focus, textarea.fc-input:focus { outline: none; border-color: var(--accent); }
+
+.fc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-bottom: 1px solid var(--panel-border);
+  background: var(--panel); flex-shrink: 0; gap: 12px; flex-wrap: wrap;
+}
+.fc-header-left { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.fc-title { font-size: 14px; font-weight: 600; letter-spacing: 0.2px; }
+.fc-hint { font-size: 11.5px; color: var(--ink-dim); }
+.fc-header-right { display: flex; gap: 8px; }
+
+.fc-body { display: flex; flex: 1; min-height: 0; }
+
+.fc-toolbar {
+  width: 108px; border-right: 1px solid var(--panel-border); background: var(--panel);
+  padding: 12px; display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; overflow-y: auto;
+}
+.fc-label { font-size: 11px; font-weight: 600; color: var(--ink-dim); margin-bottom: 7px; letter-spacing: 0.3px; }
+.fc-sublabel { font-size: 10.5px; color: var(--ink-dim); margin-bottom: 5px; }
+.fc-shape-list { display: flex; flex-direction: column; gap: 6px; }
+.fc-shape-btn { justify-content: flex-start; width: 100%; padding: 8px; }
+.fc-shape-label { font-size: 10.5px; color: var(--ink-dim); margin-left: 4px; }
+.fc-row { display: flex; gap: 6px; }
+.fc-tiny-hint { font-size: 10px; color: var(--ink-dim); margin-top: 6px; line-height: 1.4; }
+.fc-wrap-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.fc-canvas-wrap { flex: 1; position: relative; background: var(--canvas); min-width: 0; }
+#canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+.fc-node-text { outline: none; }
+.fc-node-text:focus { box-shadow: 0 0 0 2px var(--accent) inset; }
+
+.fc-panel {
+  width: 220px; border-left: 1px solid var(--panel-border); background: var(--panel);
+  padding: 14px; flex-shrink: 0; overflow-y: auto;
+}
+.fc-panel-empty { font-size: 12px; color: var(--ink-dim); line-height: 1.6; }
+.fc-panel-stats { margin-top: 14px; border-top: 1px solid var(--panel-border); padding-top: 12px; font-size: 11px; }
+.fc-panel-section { display: flex; flex-direction: column; gap: 14px; }
+.fc-panel-row-between { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.fc-panel-block { margin-bottom: 14px; }
+
+::selection { background: var(--accent-soft); }
+
+@media (max-width: 720px) {
+  .fc-toolbar { width: 88px; }
+  .fc-panel { width: 180px; }
+  .fc-hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-btn { transition: none; }
+}

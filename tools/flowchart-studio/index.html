@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flowchart Studio</title>
+<meta name="description" content="Flowchart Studio — a free, in-browser tool for building flowcharts and diagrams. Add shapes, connect them, pan and zoom, then export as SVG or PNG." />
+<meta name="keywords" content="flowchart, diagram maker, flowchart studio, process diagram, decision diagram, svg export, png export, online flowchart tool" />
+<meta name="author" content="Flowchart Studio" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#131419" />
+
+<!-- Favicon -->
+<link rel="icon" href="../../ico/fsico.jpg" type="image/jpeg" />
+<link rel="apple-touch-icon" href="../../ico/fsico.jpg" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Flowchart Studio" />
+<meta property="og:description" content="Build flowcharts and diagrams in your browser — add shapes, connect them, pan and zoom, then export as SVG or PNG." />
+<meta property="og:image" content="../../ico/fsico.jpg" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Flowchart Studio" />
+<meta name="twitter:description" content="Build flowcharts and diagrams in your browser — add shapes, connect them, pan and zoom, then export as SVG or PNG." />
+<meta name="twitter:image" content="../../ico/fsico.jpg" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <div class="fc-header">
+    <div class="fc-header-left">
+      <a href="../../index.html" class="fc-title" title="Back to Toolkit" style="text-decoration:none;color:inherit;">Flowchart Studio</a>
+      <span class="fc-hint">double-click a shape to rename · drag empty space to pan · scroll to zoom</span>
+    </div>
+    <div class="fc-header-right">
+      <button id="btnExportSvg" class="fc-btn"><span>SVG</span></button>
+      <button id="btnExportPng" class="fc-btn"><span>PNG</span></button>
+    </div>
+  </div>
+
+  <div class="fc-body">
+    <div class="fc-toolbar">
+      <div>
+        <div class="fc-label">Add shape</div>
+        <div id="shapeButtons" class="fc-shape-list"></div>
+      </div>
+
+      <div>
+        <div class="fc-label">Connect</div>
+        <button id="btnConnect" class="fc-btn fc-btn-block"><span id="connectState">Off</span></button>
+        <div id="connectHint" class="fc-tiny-hint" hidden>Click a source shape, then a target shape.</div>
+      </div>
+
+      <div>
+        <div class="fc-label">View</div>
+        <div class="fc-row">
+          <button id="btnZoomIn" class="fc-btn fc-btn-square"></button>
+          <button id="btnZoomOut" class="fc-btn fc-btn-square"></button>
+        </div>
+        <button id="btnFit" class="fc-btn fc-btn-block" style="margin-top:6px"><span>Fit</span></button>
+      </div>
+    </div>
+
+    <div class="fc-canvas-wrap">
+      <svg id="canvas" viewBox="0 0 1040 660" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <pattern id="fcgrid" width="26" height="26" patternUnits="userSpaceOnUse">
+            <circle cx="1.2" cy="1.2" r="1.2" fill="rgba(30,26,20,0.09)" />
+          </pattern>
+          <marker id="fcarrow" markerWidth="9" markerHeight="9" refX="7.2" refY="4" orient="auto-start-reverse">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#3A362E" />
+          </marker>
+        </defs>
+        <rect x="-6000" y="-6000" width="12000" height="12000" fill="#F6F3EC" data-ui="1"></rect>
+        <rect x="-6000" y="-6000" width="12000" height="12000" fill="url(#fcgrid)" data-ui="1"></rect>
+        <g id="edgesLayer"></g>
+        <g id="nodesLayer"></g>
+      </svg>
+    </div>
+
+    <div id="panel" class="fc-panel"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

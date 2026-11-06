@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chartsmith — Free Online Chart Generator</title>
+
+<meta name="description" content="Chartsmith is a free, browser-based chart generator. Build bar, line, pie, doughnut, radar, polar, scatter, bubble, and Gantt-style timeline charts with deep customization — colors, fonts, sizing, legends — then export to PNG, JPEG, WEBP, or PDF. No sign-up, runs entirely in your browser.">
+<meta name="keywords" content="chart generator, chart maker, graph maker, Gantt chart, timeline chart, bar chart generator, pie chart generator, data visualization tool, export chart PNG PDF, free chart tool">
+<meta name="author" content="Chartsmith">
+<link rel="canonical" href="https://rzsy.github.io/Toolkit/tools/chartsmith/">
+
+<!-- Open Graph / Facebook, LinkedIn, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chartsmith — Free Online Chart Generator">
+<meta property="og:description" content="Build bar, line, pie, radar, scatter, bubble, and Gantt-style timeline charts with deep customization, then export to PNG, JPEG, WEBP, or PDF — free, no sign-up, runs in your browser.">
+<meta property="og:image" content="../../ico/csico.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chartsmith — Free Online Chart Generator">
+<meta name="twitter:description" content="Build and customize bar, line, pie, radar, scatter, bubble, and timeline/Gantt charts, then export to PNG, JPEG, WEBP, or PDF.">
+<meta name="twitter:image" content="../../ico/csico.jpg">
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="../../ico/csico.jpg">
+<link rel="apple-touch-icon" href="../../ico/csico.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="vendor/chart.umd.js"></script>
+<script src="vendor/chartjs-plugin-datalabels.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="errorBanner" style="display:none; position:fixed; top:0; left:0; right:0; background:#C1502E; color:#fff; padding:9px 16px; font:12.5px/1.4 'IBM Plex Mono',monospace; z-index:99999; box-shadow:0 2px 8px rgba(0,0,0,0.25);"></div>
+
+<div id="app">
+
+  <header id="top">
+    <a href="../../index.html" class="brand" title="Back to Toolkit" style="text-decoration:none;color:inherit;"><span class="mark"></span>CHARTSMITH</a>
+
+    <div class="toolbar-group">
+      <label>FONT</label>
+      <select id="fontFamily" class="top-select font-select"></select>
+    </div>
+    <div class="toolbar-group">
+      <label>SIZE</label>
+      <input id="baseFontSize" class="top-input" type="number" min="6" max="48" value="12" style="width:52px;">
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="toolbar-group">
+      <label>EXPORT</label>
+      <select id="exportFormat" class="top-select">
+        <option value="png">PNG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="webp">WEBP</option>
+        <option value="pdf">PDF</option>
+      </select>
+    </div>
+    <div class="toolbar-group">
+      <label>SCALE</label>
+      <select id="exportScale" class="top-select">
+        <option value="1">1×</option>
+        <option value="2" selected>2×</option>
+        <option value="3">3×</option>
+        <option value="4">4×</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="exportBtn">↓ Export</button>
+  </header>
+
+  <!-- ============ DATA PANEL ============ -->
+  <div id="dataPanel">
+    <div class="panel-section" style="border-bottom:1px solid var(--line);">
+      <h3><span class="num">01</span>Chart type</h3>
+      <div class="type-grid" id="typeGrid"></div>
+    </div>
+
+    <div class="panel-section" style="flex:0; border-bottom:1px solid var(--line); padding-bottom:10px;">
+      <h3 style="display:flex; align-items:center; justify-content:space-between;">
+        <span><span class="num">02</span>Data</span>
+      </h3>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn btn-sm" id="addRowBtn">+ Row</button>
+        <button class="btn btn-sm" id="addDatasetBtn">+ Dataset</button>
+        <button class="btn btn-sm" id="loadSampleBtn">Sample data</button>
+      </div>
+    </div>
+
+    <div id="dataTableWrap"></div>
+  </div>
+
+  <!-- ============ CANVAS ============ -->
+  <div id="canvasArea">
+    <div id="chartStage">
+      <canvas id="mainChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ============ DESIGN PANEL ============ -->
+  <div id="designPanel">
+
+    <div class="panel-section">
+      <h3><span class="num">03</span>Title &amp; labels</h3>
+      <div class="field"><label>Chart title</label><input type="text" id="chartTitle" placeholder="Untitled chart"></div>
+      <div class="field"><label>Subtitle</label><input type="text" id="chartSubtitle" placeholder="Optional subtitle"></div>
+      <div class="row2">
+        <div class="field"><label>Title size</label><input type="number" id="titleSize" value="20" min="8" max="60"></div>
+        <div class="field"><label>Title color</label><input type="color" id="titleColor" value="#182225" style="width:100%;"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>X-axis label</label><input type="text" id="xAxisTitle" placeholder="e.g. Month"></div>
+        <div class="field"><label>Y-axis label</label><input type="text" id="yAxisTitle" placeholder="e.g. Revenue"></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <h3><span class="num">04</span>Legend &amp; grid</h3>
+      <div class="toggle-row"><label>Show legend</label>
+        <label class="switch"><input type="checkbox" id="showLegend" checked><span class="slider-tog"></span></label>
+      </div>
+      <div class="field"><label>Legend position</label>
+        <select id="legendPosition">
+          <option value="top" selected>Top</option>
+          <option value="bottom">Bottom</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+      <div class="toggle-row"><label>Show gridlines (X)</label>
+        <label class="switch"><input type="checkbox" id="gridX" checked><span class="slider-tog"></span></label>
+      </div>
+      <div class="toggle-row"><label>Show gridlines (Y)</label>
+        <label class="switch"><input type="checkbox" id="gridY" checked><span class="slider-tog"></span></label>
+      </div>
+      <div class="toggle-row"><label>Show value labels</label>
+        <label class="switch"><input type="checkbox" id="showDataLabels"><span class="slider-tog"></span></label>
+      </div>
+      <div class="toggle-row"><label>Show tooltips</label>
+        <label class="switch"><input type="checkbox" id="showTooltip" checked><span class="slider-tog"></span></label>
+      </div>
+    </div>
+
+    <div class="panel-section" id="typeSpecificSection">
+      <h3><span class="num">05</span>Type options</h3>
+      <div id="typeSpecificControls"></div>
+    </div>
+
+    <div class="panel-section" id="datasetStylingSection">
+      <h3><span class="num">06</span>Dataset styling</h3>
+      <div class="dataset-tab-strip" id="dsTabStrip"></div>
+      <div id="dsStyleControls" style="padding-top:12px;"></div>
+    </div>
+
+    <div class="panel-section">
+      <h3><span class="num">07</span>Canvas</h3>
+      <div class="row2">
+        <div class="field"><label>Width (px)</label><input type="number" id="canvasWidth" value="760" min="200" max="4000"></div>
+        <div class="field"><label>Height (px)</label><input type="number" id="canvasHeight" value="460" min="150" max="4000"></div>
+      </div>
+      <div class="field"><label>Background color</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="color" id="bgColor" value="#ffffff">
+          <label class="inline" style="flex:1;"><span style="font-size:11.5px;color:var(--ink-soft);">Transparent</span>
+            <label class="switch"><input type="checkbox" id="bgTransparent"><span class="slider-tog"></span></label>
+          </label>
+        </div>
+      </div>
+      <div class="field"><label>Padding</label>
+        <input type="range" id="chartPadding" min="0" max="60" value="16">
+        <span class="rangeval" id="chartPaddingVal">16px</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

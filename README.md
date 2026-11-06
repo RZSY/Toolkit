@@ -164,7 +164,22 @@ It stays free.
 
 ---
 
-The intention is to keep individual tools reasonably separated so that adding or modifying one tool doesn't require rebuilding the entire project.
+The intention is to keep individual tools reasonably separated so that adding or modifying one tool doesn't require rebuilding the entire project. Each tool and section lives in its own dedicated directory with modular HTML, CSS, and JS:
+
+```text
+toolkit/
+├── index.html                 # Main dashboard / hub
+├── style.css                  # Hub styles
+├── script.js                 # Search and theme logic
+├── ico/                       # Icons and visual assets
+├── about/                     # About page (HTML, CSS, JS)
+├── comments/                  # Feedback & comments forum
+└── tools/
+    ├── chartsmith/            # Chart generator (app, style, vendor libs)
+    ├── entity-family/         # ERD visual editor
+    ├── flowchart-studio/      # Diagram & flowchart builder
+    └── timeline-generator/    # Visual timeline builder
+```
 
 ---
 
